@@ -6,13 +6,16 @@ public class PathFindingCell
 
     private int _movementDifficulty = 1;
 
-    public PathFindingCell(Vector2Int coordinates, int heuristicApproximation)
+    public PathFindingCell(Vector2Int coordinates, Vector2Int previousCell, int pathLenght, int heuristicApproximation)
     {
         this.coordinates = coordinates;
+        SetPathLenght(previousCell, pathLenght);
         SetHeuristicApproximation(heuristicApproximation);
     }
 
     public Vector2Int coordinates {  get; private set; }
+
+    public Vector2Int previousCell { get; private set; }
     public int cellWeight { get; private set; }
     public int pathlength { get; private set; }
     public int heuristicApproximation { get; private set; }
@@ -33,7 +36,7 @@ public class PathFindingCell
     /// <returns>Успешность попытки записи новой длины пути</returns>
     /// <exception cref="ArgumentOutOfRangeException">Значение не должно быть меньше нуля</exception>
 
-    public bool TrySetPathLenght(int currentPathLenght)
+    public bool TrySetPathLenght(Vector2Int previousCell, int currentPathLenght)
     {
         if (currentPathLenght < 0)
         {
@@ -41,10 +44,22 @@ public class PathFindingCell
         }
         if (currentPathLenght < pathlength)
         {
-            pathlength = currentPathLenght;
+            this.pathlength = currentPathLenght;
+            this.previousCell = previousCell;
             return true;
         }
         return false;
+    }
+
+    private void SetPathLenght(Vector2Int previousCell, int currentPathLenght)
+    {
+        if (currentPathLenght < 0)
+        {
+            throw new ArgumentOutOfRangeException();
+        }
+
+        this.pathlength = currentPathLenght;
+        this.previousCell = previousCell;
     }
 
     /// <summary>
