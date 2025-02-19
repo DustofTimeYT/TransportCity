@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,71 +10,63 @@ public class PathFinding : MonoBehaviour
 {
     public Vector2Int gridSize = new Vector2Int(10, 10);
 
-    private int[,] _grid;
-
+    private Dictionary<Vector2Int, CellPresenter> _grid;
     private Dictionary<Vector2Int,PathFindingCell> _openedList;
     private Dictionary<Vector2Int,PathFindingCell> _closedList;
 
     private int _pathCost = 10;
 
-    private void Awake()
+    public void Init(Dictionary<Vector2Int, CellPresenter> grid)
     {
-        _grid= new int[gridSize.x, gridSize.y];
-
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                _grid[x, y] = 0;
-            }
-        }
-
-        _grid[3, 3] = 1;
-        _grid[3, 4] = 1;
-        _grid[3, 5] = 1;
-        _grid[3, 6] = 1;
-        _grid[3, 7] = 1;
-
+        _grid = grid;
         _openedList = new Dictionary<Vector2Int, PathFindingCell>();
         _closedList = new Dictionary<Vector2Int, PathFindingCell>();
     }
 
-    private void Update()
+    public bool TryPathFind(Vector2Int start, Vector2Int end, out IReadOnlyList<Vector2Int> path)
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            PathFind(new Vector2Int(1,6), new Vector2Int(7,5));
-        }
-    }
+        _openedList.Clear();
+        _closedList.Clear();
+        path = null;
 
-    private void PathFind(Vector2Int start, Vector2Int end)
-    {
+        if(start == null || end == null) return false;
+
         PathFindingCell currentCell = new PathFindingCell(start, start , 0, 0); // €чейка вокруг которой исследуютс€ €чейки // устанавливаем стартовую €чейку текущей и обнул€ем значени€
         _openedList.Add(currentCell.coordinates, currentCell);
-        Debug.Log(_openedList.Count);
+        Debug.Log("Start: " + start);
+        Debug.Log("End: " + end);
 
-        while (_openedList.Count == 0 || currentCell.coordinates != end)
+        while (_openedList.Count != 0)
         {
-            ExplorationCells(currentCell, end);
-            _closedList.Add(currentCell.coordinates, currentCell);
-            _openedList.Remove(currentCell.coordinates);
-            currentCell = SelectNewCurrentCell();
+            if (TrySelectNewCurrentCell(out currentCell))
+            {
+                ExplorationCells(currentCell, end);
+                _closedList.Add(currentCell.coordinates, currentCell);
+                _openedList.Remove(currentCell.coordinates);
+            }
+
+            if (currentCell.coordinates == end) { break; }
         }
 
-        if (_openedList.Count == 0)
-        {
-            Debug.Log($"ѕуть от €чейки {start} до €чейки {end} не найден");
-            return;
-        }
-        else
-        {
+        if (currentCell.coordinates == end)
+        {    
             Debug.Log("Path");
-            var path = CreatePath(start, currentCell);
-            foreach (var pathCell in path) 
+            path = CreatePath(start, currentCell);
+            foreach (var pathCell in path)
             {
                 Debug.Log(pathCell);
             }
+            _closedList.Clear();
+            _openedList.Clear();
         }
+        else
+        {
+            Debug.Log($"ѕуть от €чейки {start} до €чейки {end} не найден");
+            _closedList.Clear();
+            _openedList.Clear();
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -132,18 +125,22 @@ public class PathFinding : MonoBehaviour
                 {
                     Vector2Int cell = new(currentCellCoordinates.x + x, currentCellCoordinates.y + y);
 
-                    if (cell.x < 0 || cell.x > gridSize.x)
+                    if (cell.x < 0 || cell.x >= gridSize.x)
                     {
                         continue;
                     }
-                    if (cell.y < 0 || cell.y > gridSize.y)
+                    if (cell.y < 0 || cell.y >= gridSize.y)
                     {
                         continue;
                     }
-                    if (_grid[cell.x, cell.y] == 1)
+                    if (_grid.TryGetValue(new Vector2Int(cell.x, cell.y), out CellPresenter cellData))
                     {
-                        continue;
+                        if (cellData.GetCellStateType() == CellStateType.UnrichmentCell )
+                        {
+                            continue;
+                        }
                     }
+  
                     surroundingCells.Add(cell);
                 }
             }
@@ -164,8 +161,6 @@ public class PathFinding : MonoBehaviour
 
         PathFindingCell activeCell;
 
-        Debug.Log($"currentCellCoordinates {currentCellCoordinates}");
-
         if (_openedList.TryGetValue(activeCellCoordinates, out activeCell))
         {
             activeCell.TrySetPathLenght(currentCellCoordinates, CalculatePathLenght(currentPathLength));
@@ -178,11 +173,6 @@ public class PathFinding : MonoBehaviour
             _openedList.Add(activeCellCoordinates, activeCell);
         }
 
-        Debug.Log($"Cell {activeCell.coordinates}");
-        Debug.Log($"PathLenght {activeCell.pathlength}");
-        Debug.Log($"HeuristicApproximation {activeCell.heuristicApproximation}");
-        Debug.Log($"previousCell {activeCell.previousCell}");
-
         activeCell.CalculateCellWeight();
     }
 
@@ -191,46 +181,49 @@ public class PathFinding : MonoBehaviour
     /// </summary>
     /// <returns>ячейку с минимальным значением </returns>
 
-    private PathFindingCell SelectNewCurrentCell()
+    private bool TrySelectNewCurrentCell(out PathFindingCell cellWithMinPathLenght)
     {
-        PathFindingCell cellWithMinPathLenght;
         List<PathFindingCell> openedList;
         
         openedList = _openedList.Values.ToList();
 
-        cellWithMinPathLenght = openedList[0];
-
-        foreach (PathFindingCell currentCell in openedList)
+        if (openedList.Count > 0)
         {
-            // ≈сли вес текущей €чейки больше, чем найденый минимальный вес €чейки, то сохран€ем текущую €чейку
-            if (currentCell.cellWeight < cellWithMinPathLenght.cellWeight)
-            { 
-                cellWithMinPathLenght = currentCell; 
-            }
-            else if (currentCell.cellWeight == cellWithMinPathLenght.cellWeight)
+            cellWithMinPathLenght = openedList[0];
+            openedList.RemoveAt(0);
+
+            foreach (PathFindingCell currentCell in openedList)
             {
-                // ≈сли у них одинаковый вес, то ищем минимальное эвристическое приближение
-                if (currentCell.heuristicApproximation < cellWithMinPathLenght.heuristicApproximation)
+                // ≈сли вес текущей €чейки больше, чем найденый минимальный вес €чейки, то сохран€ем текущую €чейку
+                if (currentCell.cellWeight < cellWithMinPathLenght.cellWeight)
                 {
                     cellWithMinPathLenght = currentCell;
                 }
-                else if (currentCell.heuristicApproximation == cellWithMinPathLenght.heuristicApproximation)
+                else if (currentCell.cellWeight == cellWithMinPathLenght.cellWeight)
                 {
-                    // ≈сли у них одинаковое эвристическое приближение, то €чейка выбираетс€ слуайным образом
-                    int rand = Random.Range(0, 100);
-                    if (rand < 50)
+                    // ≈сли у них одинаковый вес, то ищем минимальное эвристическое приближение
+                    if (currentCell.heuristicApproximation < cellWithMinPathLenght.heuristicApproximation)
                     {
                         cellWithMinPathLenght = currentCell;
+                    }
+                    else if (currentCell.heuristicApproximation == cellWithMinPathLenght.heuristicApproximation)
+                    {
+                        // ≈сли у них одинаковое эвристическое приближение, то €чейка выбираетс€ слуайным образом
+                        int rand = Random.Range(0, 100);
+                        if (rand < 50)
+                        {
+                            cellWithMinPathLenght = currentCell;
+                        }
                     }
                 }
             }
         }
-
-        Debug.Log("|||||||||");
-        Debug.Log(cellWithMinPathLenght.coordinates);
-        Debug.Log("|||||||||");
-
-        return cellWithMinPathLenght;
+        else
+        {
+            cellWithMinPathLenght = null;
+            return false;
+        }
+        return true;
     }
 
     private IReadOnlyList<Vector2Int> CreatePath(Vector2Int startCell, PathFindingCell endCell)
