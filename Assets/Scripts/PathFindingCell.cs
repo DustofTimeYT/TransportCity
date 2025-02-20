@@ -4,13 +4,13 @@ using UnityEngine;
 public class PathFindingCell
 {
 
-    private int _movementDifficulty = 1;
+    public int movementDifficulty {  get; private set; }
 
-    public PathFindingCell(Vector2Int coordinates, Vector2Int previousCell, int pathLenght, int heuristicApproximation)
+    public PathFindingCell(Vector2Int coordinates, int movementDifficulty)
     {
         this.coordinates = coordinates;
-        SetPathLenght(previousCell, pathLenght);
-        SetHeuristicApproximation(heuristicApproximation);
+        this.movementDifficulty = movementDifficulty;
+        pathlength = 0;
     }
 
     public Vector2Int coordinates {  get; private set; }
@@ -26,13 +26,14 @@ public class PathFindingCell
 
     public void CalculateCellWeight()
     {
-        cellWeight = pathlength * _movementDifficulty + heuristicApproximation;
+        cellWeight = pathlength + heuristicApproximation;
     }
 
     /// <summary>
     /// Метод попытки установки значения длины пути до этой ячейки из стартовой
     /// </summary>
     /// <param name="currentPathLenght">Новая длина пути, которую необходимо записать</param>
+    /// <param name="previousCell">Клетка, из которой пришли в эту клетку</param>
     /// <returns>Успешность попытки записи новой длины пути</returns>
     /// <exception cref="ArgumentOutOfRangeException">Значение не должно быть меньше нуля</exception>
 
@@ -42,7 +43,7 @@ public class PathFindingCell
         {
             throw new ArgumentOutOfRangeException();
         }
-        if (currentPathLenght < pathlength)
+        if (currentPathLenght < pathlength || pathlength == 0)
         {
             this.pathlength = currentPathLenght;
             this.previousCell = previousCell;
@@ -51,24 +52,13 @@ public class PathFindingCell
         return false;
     }
 
-    private void SetPathLenght(Vector2Int previousCell, int currentPathLenght)
-    {
-        if (currentPathLenght < 0)
-        {
-            throw new ArgumentOutOfRangeException();
-        }
-
-        this.pathlength = currentPathLenght;
-        this.previousCell = previousCell;
-    }
-
     /// <summary>
     /// Метод записи эвристического приближения
     /// </summary>
     /// <param name="currentHeuristicApproximation">Рассчитаное значение эвристического приближения, которое необходимо записать</param>
     /// <exception cref="ArgumentOutOfRangeException">Значение не должно быть меньше нуля</exception>
 
-    private void SetHeuristicApproximation(int currentHeuristicApproximation)
+    public void SetHeuristicApproximation(int currentHeuristicApproximation)
     {
         if (currentHeuristicApproximation < 0)
         {

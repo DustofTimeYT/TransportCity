@@ -23,40 +23,31 @@ public class CellView : MonoBehaviour
 
     public List<CellActionData> GetActionData()
     {
-        Debug.Log("GetActionData" + _presenter);
         return _presenter.GetActionData();
     }
 
     public void SetColor(CellStateType cellStateType)
     {
-        Debug.Log("SetColor" + _presenter);
         switch (cellStateType)
         {
             case CellStateType.StartCell:
                 _mainRenderer.material = _startColor;
                 _textMovementDifficulty.gameObject.SetActive(false);
-                Debug.Log("StartCell set");
-                Debug.Log(_textMovementDifficulty.gameObject.activeSelf);
-                Debug.Log(_presenter);
-                //_presenter.SetMovementDifficulty(2);
                 break;
 
             case CellStateType.EndCell:
                 _mainRenderer.material = _endColor;
                 _textMovementDifficulty.gameObject.SetActive(false);
-                Debug.Log("EndCell set");
                 break;
 
             case CellStateType.AvailableCell:
                 _mainRenderer.material = _defaulteColor;
                 _textMovementDifficulty.gameObject.SetActive(true);
-                Debug.Log("AvailableCell set");
                 break;
 
             case CellStateType.UnrichmentCell:
                 _mainRenderer.material = _unrichmentColor;
                 _textMovementDifficulty.gameObject.SetActive(false);
-                Debug.Log("UnrichmentCell set");
                 break;
 
             default:

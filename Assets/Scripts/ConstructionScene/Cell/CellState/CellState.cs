@@ -15,6 +15,8 @@ public abstract class CellState
 
     public abstract List<CellActionData> GetActionData();
 
+    public abstract void SetMovementDifficulty(string value);
+
     public abstract void SetStart();
 
     public abstract void SetEnd();

@@ -56,6 +56,11 @@ public class CellPresenter
         return _cellModel.GetActionData();
     }
 
+    public int GetMovementDifficulty()
+    {
+        return _cellModel.MovementDifficulty;
+    }
+
     public void SetMovementDifficulty( int value)
     {
         _cellModel.SetMovementDifficulty(value);

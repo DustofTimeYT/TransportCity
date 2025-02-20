@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RightClickMenu : MonoBehaviour
 {
     [SerializeField] private RectTransform _root;
+    [SerializeField] private TMP_InputField _setMovementDifficultyInputField;
     [SerializeField] private Button _setStartPosButton;
     [SerializeField] private Button _setEndPosButton;
     [SerializeField] private Button _setAvailabelCellButton;
@@ -32,11 +34,27 @@ public class RightClickMenu : MonoBehaviour
 
         foreach (var actionData in cellActions)
         {
-            var button = GetButtonByType(actionData.CellActionType);
-            button.gameObject.SetActive(true);
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(actionData.Callback);
-            button.onClick.AddListener(Hide);
+            Debug.Log($"{actionData.UITypeAction} {actionData.CellActionType} {actionData.Callback}");
+            switch (actionData.UITypeAction) 
+            {
+                case UITypeAction.Button:
+                    Debug.Log(actionData.UITypeAction);
+                    Debug.Log(actionData.CellActionType);
+                    var button = GetButtonByType(actionData.CellActionType);
+                    button.gameObject.SetActive(true);
+                    button.onClick.RemoveAllListeners();
+                    button.onClick.AddListener(actionData.Callback);
+                    button.onClick.AddListener(Hide);
+                    break;
+
+                case UITypeAction.InputField:
+                    var inputField = GetInputFieldType(actionData.CellActionType);
+                    inputField.gameObject.SetActive(true);
+                    inputField.onSubmit.RemoveAllListeners();
+                    inputField.onSubmit.AddListener(actionData.CallbackInt);
+                    inputField.ActivateInputField();
+                    break;
+            }
         }
     }
 
@@ -49,6 +67,7 @@ public class RightClickMenu : MonoBehaviour
     public void Hide()
     {
         _root.gameObject.SetActive(false);
+        _setMovementDifficultyInputField.gameObject.SetActive(false);
         _setStartPosButton.gameObject.SetActive(false);
         _setEndPosButton.gameObject.SetActive(false);
         _setAvailabelCellButton.gameObject.SetActive(false);
@@ -72,7 +91,20 @@ public class RightClickMenu : MonoBehaviour
                 return _setUnrichmentCellButton;
 
             default:
-                Debug.LogError("Not all enums for TowerActionPopup covered! Unknown type " + cellActionType);
+                Debug.LogError("Not all enums for RightClickMenu covered! Unknown type " + cellActionType);
+                return null;
+        }
+    }
+
+    private TMP_InputField GetInputFieldType(CellActionType cellActionType)
+    {
+        switch (cellActionType)
+        {
+            case CellActionType.MovementDifficulty:
+                return _setMovementDifficultyInputField;
+
+            default:
+                Debug.LogError("Not all enums for RightClickMenu covered! Unknown type " + cellActionType);
                 return null;
         }
     }

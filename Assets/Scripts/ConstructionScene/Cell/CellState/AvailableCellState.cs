@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 sealed class AvailableCellState : CellState
 {
@@ -12,10 +10,19 @@ sealed class AvailableCellState : CellState
     {
         return new List<CellActionData>()
         {
-            new CellActionData(CellActionType.Start, SetStart),
-            new CellActionData(CellActionType.End, SetEnd),
-            new CellActionData(CellActionType.Disable, SetDisabel)
+            new CellActionData(UITypeAction.InputField, CellActionType.MovementDifficulty, SetMovementDifficulty),
+            new CellActionData(UITypeAction.Button, CellActionType.Start, SetStart),
+            new CellActionData(UITypeAction.Button, CellActionType.End, SetEnd),
+            new CellActionData(UITypeAction.Button, CellActionType.Disable, SetDisabel)
         };
+    }
+
+    public override void SetMovementDifficulty(string value)
+    {
+        if (int.TryParse(value, out int i))
+        {
+            _cell.SetMovementDifficulty(i);
+        }
     }
 
     public override void SetStart()

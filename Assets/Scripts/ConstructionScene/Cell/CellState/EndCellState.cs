@@ -12,10 +12,15 @@ sealed class EndCellState : CellState
     {
         return new List<CellActionData>()
         {
-            new CellActionData(CellActionType.Start, SetStart),
-            new CellActionData(CellActionType.Availabel, SetAvailabel),
-            new CellActionData(CellActionType.Disable, SetDisabel)
+            new CellActionData(UITypeAction.Button, CellActionType.Start, SetStart),
+            new CellActionData(UITypeAction.Button, CellActionType.Availabel, SetAvailabel),
+            new CellActionData(UITypeAction.Button, CellActionType.Disable, SetDisabel)
         };
+    }
+
+    public override void SetMovementDifficulty(string value)
+    {
+        // не возможно установить сложность перемещения для этой клетки
     }
 
     public override void SetStart()

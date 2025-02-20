@@ -12,8 +12,13 @@ sealed class UnrichmentCellState : CellState
     {
         return new List<CellActionData>()
         {
-            new CellActionData(CellActionType.Availabel, SetAvailabel)
+            new CellActionData(UITypeAction.Button, CellActionType.Availabel, SetAvailabel)
         };
+    }
+
+    public override void SetMovementDifficulty(string value)
+    {
+        // не возможно установить сложность перемещения для этой клетки
     }
 
     public override void SetStart()
