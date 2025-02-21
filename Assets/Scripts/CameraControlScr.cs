@@ -59,8 +59,6 @@ public class CameraControlScr : MonoBehaviour
                 _downClickCameraPosition = cameraPivot.position;
             }
 
-            Debug.Log(_camera.ScreenToViewportPoint(Input.mousePosition));
-
             _deltaMousePosition = _downClickMousePosition - Input.mousePosition;
 
             //cameraPivot.position = new Vector3(_downClickCameraPosition.x + _deltaMousePosition.x * _moveSpeed * 0.1f, cameraPivot.position.y, _downClickCameraPosition.z + _deltaMousePosition.y * _moveSpeed * 0.1f);

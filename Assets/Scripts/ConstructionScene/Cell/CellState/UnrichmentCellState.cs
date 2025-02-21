@@ -1,6 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
+/// <summary>
+/// Ненаследуемый класс-состояние не доступной для перемещения клетки
+/// </summary>
 
 sealed class UnrichmentCellState : CellState
 {

@@ -1,3 +1,8 @@
+
+/// <summary>
+/// Перечисление типов клеток
+/// </summary>
+
 public enum CellStateType
 {
     StartCell = 0,

@@ -1,6 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// Класс, хранящий информацио о клетке во время сессии
+/// </summary>
 
 public class CellModel
 {

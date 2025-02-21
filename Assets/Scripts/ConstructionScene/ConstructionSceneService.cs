@@ -1,8 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
+
+/// <summary>
+/// Точка входа в приложение (в будущем перенести на Zenject) 
+/// </summary>
 
 public class ConstructionSceneService : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class ConstructionSceneService : MonoBehaviour
     private GridModel _gridModel;
     private GridPresenter _gridPresenter;
 
-    public PathFinding _pathFindingSystem;
+    private PathFinding _pathFindingSystem;
 
     public ConstructionSceneUI _constructionSceneUI;
 
@@ -27,20 +28,29 @@ public class ConstructionSceneService : MonoBehaviour
         _grid = GridGenerator.GenerateGridModel(_gridConfig, _cellConfig, _cellView, UIEventBus);
         _gridModel = new GridModel(_grid);
         _gridPresenter = new GridPresenter(UIEventBus, _gridModel);
-        _pathFindingSystem.Init(_grid);
+        _pathFindingSystem = new PathFinding();
+        SurroundingCellsGenerator surroundingCellsGenerator = new(_gridConfig);
+        _pathFindingSystem.Init(surroundingCellsGenerator, _grid);
     }
 
-
-    // Update is called once per frame
     void Update()
+    {
+        CalculatePath();
+    }
+
+    /// <summary>
+    /// Метод вызова рассчета пути и его отображения
+    /// </summary>
+
+    private void CalculatePath()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
             var startCell = _gridModel.StartCell.GetCellPosition();
             var endCell = _gridModel.EndCell.GetCellPosition();
-            if(_pathFindingSystem.TryPathFind(startCell, endCell, out IReadOnlyList<Vector2Int> path))
+            if (_pathFindingSystem.TryPathFind(startCell, endCell, out IReadOnlyList<Vector2Int> path))
             {
-                StartCoroutine(_gridPresenter.DisplayPath(path)); 
+                StartCoroutine(_gridPresenter.DisplayPath(path));
             }
         }
     }

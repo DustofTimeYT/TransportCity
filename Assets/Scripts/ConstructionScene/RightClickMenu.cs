@@ -34,12 +34,9 @@ public class RightClickMenu : MonoBehaviour
 
         foreach (var actionData in cellActions)
         {
-            Debug.Log($"{actionData.UITypeAction} {actionData.CellActionType} {actionData.Callback}");
             switch (actionData.UITypeAction) 
             {
                 case UITypeAction.Button:
-                    Debug.Log(actionData.UITypeAction);
-                    Debug.Log(actionData.CellActionType);
                     var button = GetButtonByType(actionData.CellActionType);
                     button.gameObject.SetActive(true);
                     button.onClick.RemoveAllListeners();
@@ -51,7 +48,7 @@ public class RightClickMenu : MonoBehaviour
                     var inputField = GetInputFieldType(actionData.CellActionType);
                     inputField.gameObject.SetActive(true);
                     inputField.onSubmit.RemoveAllListeners();
-                    inputField.onSubmit.AddListener(actionData.CallbackInt);
+                    inputField.onSubmit.AddListener(actionData.CallbackString);
                     inputField.ActivateInputField();
                     break;
             }

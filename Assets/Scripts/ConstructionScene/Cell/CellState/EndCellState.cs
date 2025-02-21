@@ -1,6 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
+/// <summary>
+/// Ненаследуемый класс-состояние целевой клетки, по достижении этой клетки поиск пути заканчивается
+/// </summary>
 
 sealed class EndCellState : CellState
 {

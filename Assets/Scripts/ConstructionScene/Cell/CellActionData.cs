@@ -1,15 +1,15 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
+
+/// <summary>
+/// Класс передающий действие с клеткой
+/// </summary>
 
 public class CellActionData
 {
     public readonly UITypeAction UITypeAction;
     public readonly CellActionType CellActionType;
     public readonly UnityAction Callback;
-    public readonly UnityAction<string> CallbackInt;
+    public readonly UnityAction<string> CallbackString;
 
     public CellActionData(UITypeAction uiTypeAction, CellActionType cellActionType, UnityAction callback)
     {
@@ -22,6 +22,6 @@ public class CellActionData
     {
         UITypeAction = uiTypeAction;
         CellActionType = cellActionType;
-        CallbackInt = callback;
+        CallbackString = callback;
     }
 }

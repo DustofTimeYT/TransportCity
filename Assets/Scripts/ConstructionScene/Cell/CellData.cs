@@ -1,6 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+///  ласс, позвол€ющий сохранить информацию о клетке
+/// </summary>
 
 [System.Serializable]
 public class CellData

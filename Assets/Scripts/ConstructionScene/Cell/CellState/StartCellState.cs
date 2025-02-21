@@ -1,6 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
+/// <summary>
+/// Ненаследуемый класс-состояние начальной клетки, с этой клетки начинается поиск пути
+/// </summary>
 
 sealed class StartCellState : CellState
 {

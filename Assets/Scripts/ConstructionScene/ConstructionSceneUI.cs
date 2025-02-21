@@ -63,7 +63,6 @@ public class ConstructionSceneUI : MonoBehaviour
             else
             {
                 _rightClickMenu.Hide();
-                Debug.Log("Close RCM");
             }
         }
     }

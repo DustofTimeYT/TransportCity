@@ -1,6 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// Класс, предоставляющий возможность взаимодействовать с данными
+/// </summary>
 
 public class CellPresenter
 {

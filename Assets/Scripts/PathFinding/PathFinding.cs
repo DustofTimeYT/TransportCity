@@ -1,14 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.InputManagerEntry;
 
-public class PathFinding : MonoBehaviour
+public class PathFinding
 {
     public Vector2Int gridSize = new Vector2Int(10, 10);
+
+    private SurroundingCellsGenerator _surroundingCellsGenerator;
 
     private Dictionary<Vector2Int, CellPresenter> _grid;
     private Dictionary<Vector2Int,PathFindingCell> _openedList;
@@ -16,9 +14,11 @@ public class PathFinding : MonoBehaviour
 
     private int _pathCost = 10;
 
-    public void Init(Dictionary<Vector2Int, CellPresenter> grid)
+    public void Init(SurroundingCellsGenerator surroundingCells, Dictionary<Vector2Int, CellPresenter> grid)
     {
+        _surroundingCellsGenerator = surroundingCells;
         _grid = grid;
+
         _openedList = new Dictionary<Vector2Int, PathFindingCell>();
         _closedList = new Dictionary<Vector2Int, PathFindingCell>();
     }
@@ -70,116 +70,19 @@ public class PathFinding : MonoBehaviour
     }
 
     /// <summary>
-    /// ћетод рассчета эвристического приближени€ с помощью манхэттенского рассто€ни€ 
-    /// </summary>
-    /// <param name="currentCell"> оординаты (x, y) €чейки дл€ которой рассчитываетс€ приближение</param>
-    /// <param name="endCell"> оординаты (x, y) целевой €чейки</param>
-    /// <returns></returns>
-
-    private int CalculateHeuristicApproximation(Vector2Int currentCell, Vector2Int endCell)
-    {
-        return (Mathf.Abs(currentCell.x - endCell.x) + Mathf.Abs(currentCell.y - endCell.y)) * _pathCost;
-    }
-
-    /// <summary>
-    /// ћетод рассчета длины пути до выбранной клетки
-    /// </summary>
-    /// <param name="currentCellPathLenght"> ƒлина пути до предшествующей клетки</param>
-    /// <returns>длину пути до переданной клетки</returns>
-
-    private int CalculatePathLenght(int currentCellPathLenght, int movementDifficulty)
-    {
-        return currentCellPathLenght + _pathCost * movementDifficulty;
-    }
-
-    /// <summary>
     /// ћетод изучени€ €чеек вокруг текущей €чейки
     /// </summary>
-    /// <param name="currentCell"> представление текущей €чейки</param>
+    /// <param name="currentCell">ѕредставление текущей €чейки</param>
     /// <param name="endCellCoordinates"> оординаты (x, y) целевой €чейки</param>
 
     private void ExplorationCells(PathFindingCell currentCell, Vector2Int endCellCoordinates)
     {
-        var aroundCellsCoordinates = FindAvailableSurroundingCells(currentCell.coordinates);
+        var aroundCells = _surroundingCellsGenerator.FindSurroundingCells(currentCell.coordinates, _grid, _openedList);
 
-        foreach (PathFindingCell activeCellCoordinates in aroundCellsCoordinates)
+        foreach (PathFindingCell activeCell in aroundCells)
         {
-            ExplorationActiveCell(activeCellCoordinates, currentCell.coordinates, currentCell.pathlength, endCellCoordinates);
+            ExplorationActiveCell(activeCell, currentCell.coordinates, currentCell.pathlength, endCellCoordinates);
         }
-    }
-
-    /// <summary>
-    /// ћетод поиска €чеек вокруг текущей €чейки
-    /// </summary>
-    /// <param name="currentCellCoordinates"> оординаты (x, y) текущей €чейки </param>
-    /// <returns></returns>
-    /*
-    private IReadOnlyList<Vector2Int> FindAvailableSurroundingCells(Vector2Int currentCellCoordinates)
-    {
-        List<Vector2Int> surroundingCells = new List<Vector2Int>();
-        for (int x = -1; x <= 1; x++)
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x==0  && y!=0 || x!=0 && y == 0)
-                {
-                    Vector2Int cell = new(currentCellCoordinates.x + x, currentCellCoordinates.y + y);
-
-                    if (cell.x < 0 || cell.x >= gridSize.x)
-                    {
-                        continue;
-                    }
-                    if (cell.y < 0 || cell.y >= gridSize.y)
-                    {
-                        continue;
-                    }
-                    if (_grid.TryGetValue(new Vector2Int(cell.x, cell.y), out CellPresenter cellData))
-                    {
-                        if (cellData.GetCellStateType() == CellStateType.UnrichmentCell )
-                        {
-                            continue;
-                        }
-                    }
-  
-                    surroundingCells.Add(cell);
-                }
-            }
-        }
-        return surroundingCells;
-    }
-    */
-    private IReadOnlyList<PathFindingCell> FindAvailableSurroundingCells(Vector2Int currentCellCoordinates)
-    {
-        List<PathFindingCell> surroundingCells = new List<PathFindingCell>();
-        for (int x = -1; x <= 1; x++)
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x == 0 && y != 0 || x != 0 && y == 0)
-                {
-                    Vector2Int cell = new(currentCellCoordinates.x + x, currentCellCoordinates.y + y);
-
-                    if (cell.x < 0 || cell.x >= gridSize.x)
-                    {
-                        continue;
-                    }
-                    if (cell.y < 0 || cell.y >= gridSize.y)
-                    {
-                        continue;
-                    }
-                    if (_grid.TryGetValue(new Vector2Int(cell.x, cell.y), out CellPresenter cellData))
-                    {
-                        if (cellData.GetCellStateType() == CellStateType.UnrichmentCell)
-                        {
-                            continue;
-                        }
-                    }
-
-                    surroundingCells.Add(new PathFindingCell(cell, cellData.GetMovementDifficulty()));
-                }
-            }
-        }
-        return surroundingCells;
     }
 
     /// <summary>
@@ -197,12 +100,14 @@ public class PathFinding : MonoBehaviour
 
         if (!_openedList.ContainsKey(activeCell.coordinates))
         {
-            int calculateHA = CalculateHeuristicApproximation(activeCell.coordinates, endCellCoordinates);
+            int calculateHA = PFCalculator.CalculateHeuristicApproximation(activeCell.coordinates, endCellCoordinates);
             activeCell.SetHeuristicApproximation(calculateHA);
             _openedList.Add(activeCell.coordinates, activeCell);
         }
 
-        activeCell.TrySetPathLenght(currentCellCoordinates, CalculatePathLenght(currentPathLength, activeCell.movementDifficulty));
+        Debug.Log($"HA {activeCell.heuristicApproximation} PL {activeCell.pathlength}");
+
+        activeCell.TrySetPathLenght(currentCellCoordinates, PFCalculator.CalculatePathLenght(currentPathLength, activeCell.movementDifficulty));
 
         activeCell.CalculateCellWeight();
     }

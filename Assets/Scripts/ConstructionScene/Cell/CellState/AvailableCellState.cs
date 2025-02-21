@@ -1,5 +1,9 @@
 using System.Collections.Generic;
 
+/// <summary>
+/// Ненаследуемый класс-состояние клетки, которые может использовать алгоритм для построения маршрута
+/// </summary>
+
 sealed class AvailableCellState : CellState
 {
     public AvailableCellState(CellPresenter cell) : base(cell)

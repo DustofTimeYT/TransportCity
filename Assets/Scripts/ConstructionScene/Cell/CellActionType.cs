@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+/// <summary>
+/// Перечисление доступных действий, которые можно сделать с клеткой
+/// </summary>
 
 public enum CellActionType
 {

@@ -1,6 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/// <summary>
+/// Данные клетки по умолчанию
+/// </summary>
 
 [CreateAssetMenu(fileName = "CellConfig", menuName = "ScriptableObjects/CellConfig", order = 1)]
 public class CellConfig : ScriptableObject
