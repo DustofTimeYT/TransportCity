@@ -10,14 +10,14 @@ public class PathFindingCell
     {
         this.coordinates = coordinates;
         this.movementDifficulty = movementDifficulty;
-        pathlength = 0;
+        pathLength = 0;
     }
 
     public Vector2Int coordinates {  get; private set; }
 
     public Vector2Int previousCell { get; private set; }
     public int cellWeight { get; private set; }
-    public int pathlength { get; private set; }
+    public int pathLength { get; private set; }
     public int heuristicApproximation { get; private set; }
 
     /// <summary>
@@ -26,7 +26,7 @@ public class PathFindingCell
 
     public void CalculateCellWeight()
     {
-        cellWeight = pathlength + heuristicApproximation;
+        cellWeight = pathLength + heuristicApproximation;
     }
 
     /// <summary>
@@ -43,9 +43,9 @@ public class PathFindingCell
         {
             throw new ArgumentOutOfRangeException();
         }
-        if (currentPathLenght < pathlength || pathlength == 0)
+        if (currentPathLenght < pathLength || pathLength == 0)
         {
-            this.pathlength = currentPathLenght;
+            this.pathLength = currentPathLenght;
             this.previousCell = previousCell;
             return true;
         }

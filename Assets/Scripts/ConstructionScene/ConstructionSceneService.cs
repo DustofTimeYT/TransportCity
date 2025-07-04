@@ -28,9 +28,8 @@ public class ConstructionSceneService : MonoBehaviour
         _grid = GridGenerator.GenerateGridModel(_gridConfig, _cellConfig, _cellView, UIEventBus);
         _gridModel = new GridModel(_grid);
         _gridPresenter = new GridPresenter(UIEventBus, _gridModel);
-        _pathFindingSystem = new PathFinding();
-        SurroundingCellsGenerator surroundingCellsGenerator = new(_gridConfig);
-        _pathFindingSystem.Init(surroundingCellsGenerator, _grid);
+        SurroundingCellsFinder surroundingCellsFinder = new(_gridConfig);
+        _pathFindingSystem = new PathFinding(surroundingCellsFinder, _grid);
     }
 
     void Update()

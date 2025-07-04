@@ -22,10 +22,10 @@ public class GridPresenter
     {
         if (_gridModel.StartCell != null)
         {
+            Debug.Log("1");
             _gridModel.StartCell.SetCellStateType(CellStateType.AvailableCell);
         }
 
-        cell.SetCellStateType(CellStateType.StartCell);
         _gridModel.SetStartCell(cell);
     }
 
@@ -36,7 +36,6 @@ public class GridPresenter
             _gridModel.EndCell.SetCellStateType(CellStateType.AvailableCell);
         }
 
-        cell.SetCellStateType(CellStateType.EndCell);
         _gridModel.SetEndCell(cell);
     }
 
@@ -54,12 +53,12 @@ public class GridPresenter
 
     private void OnSetStartCell(CellPresenter startCell)
     {
-        _gridModel.SetStartCell(startCell);
+        SetStartCell(startCell);
     }
 
     private void OnSetEndCell(CellPresenter endCell)
     {
-        _gridModel.SetEndCell(endCell);
+        SetEndCell(endCell);
     }
     
     public IEnumerator DisplayPath(IReadOnlyList<Vector2Int> path)

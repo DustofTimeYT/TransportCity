@@ -4,19 +4,15 @@ using UnityEngine;
 
 public class PathFinding
 {
-    public Vector2Int gridSize = new Vector2Int(10, 10);
-
-    private SurroundingCellsGenerator _surroundingCellsGenerator;
+    private SurroundingCellsFinder _surroundingCellsFinder;
 
     private Dictionary<Vector2Int, CellPresenter> _grid;
     private Dictionary<Vector2Int,PathFindingCell> _openedList;
     private Dictionary<Vector2Int,PathFindingCell> _closedList;
 
-    private int _pathCost = 10;
-
-    public void Init(SurroundingCellsGenerator surroundingCells, Dictionary<Vector2Int, CellPresenter> grid)
+    public PathFinding(SurroundingCellsFinder surroundingCellsFinder, Dictionary<Vector2Int, CellPresenter> grid)
     {
-        _surroundingCellsGenerator = surroundingCells;
+        _surroundingCellsFinder = surroundingCellsFinder;
         _grid = grid;
 
         _openedList = new Dictionary<Vector2Int, PathFindingCell>();
@@ -33,8 +29,6 @@ public class PathFinding
 
         PathFindingCell currentCell = new PathFindingCell(start, 0 ); // €чейка вокруг которой исследуютс€ €чейки // устанавливаем стартовую €чейку текущей и обнул€ем значени€
         _openedList.Add(currentCell.coordinates, currentCell);
-        Debug.Log("Start: " + start);
-        Debug.Log("End: " + end);
 
         while (_openedList.Count != 0)
         {
@@ -77,11 +71,11 @@ public class PathFinding
 
     private void ExplorationCells(PathFindingCell currentCell, Vector2Int endCellCoordinates)
     {
-        var aroundCells = _surroundingCellsGenerator.FindSurroundingCells(currentCell.coordinates, _grid, _openedList);
+        var aroundCells = _surroundingCellsFinder.FindSurroundingCells(currentCell.coordinates, _grid, _openedList);
 
         foreach (PathFindingCell activeCell in aroundCells)
         {
-            ExplorationActiveCell(activeCell, currentCell.coordinates, currentCell.pathlength, endCellCoordinates);
+            ExplorationActiveCell(activeCell, currentCell.coordinates, currentCell.pathLength, endCellCoordinates);
         }
     }
 
@@ -104,8 +98,6 @@ public class PathFinding
             activeCell.SetHeuristicApproximation(calculateHA);
             _openedList.Add(activeCell.coordinates, activeCell);
         }
-
-        Debug.Log($"HA {activeCell.heuristicApproximation} PL {activeCell.pathlength}");
 
         activeCell.TrySetPathLenght(currentCellCoordinates, PFCalculator.CalculatePathLenght(currentPathLength, activeCell.movementDifficulty));
 
