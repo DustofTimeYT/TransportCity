@@ -9,7 +9,7 @@ public class ConstructionSceneService : MonoBehaviour
 {
     [SerializeField] private GridConfig _gridConfig;
     [SerializeField] private CellConfig _cellConfig;
-    [SerializeField] private CellView _cellView;
+    [SerializeField] private RoadCellView _cellView;
 
     private GridModel _gridModel;
     private GridPresenter _gridPresenter;
@@ -18,18 +18,21 @@ public class ConstructionSceneService : MonoBehaviour
 
     public ConstructionSceneUI _constructionSceneUI;
 
-    private Dictionary<Vector2Int, CellPresenter> _grid;
+    public ConstructionSystem_V ConstructionSystem_V;
+
 
     private void Awake()
     {
 
         UIEventBus UIEventBus = new UIEventBus();
         _constructionSceneUI.Init(UIEventBus);
-        _grid = GridGenerator.GenerateGridModel(_gridConfig, _cellConfig, _cellView, UIEventBus);
+        Dictionary<Vector2Int, AbstractCellPresenter> _grid = GridGenerator.GenerateGridModel(_gridConfig, _cellConfig, _cellView, UIEventBus);
         _gridModel = new GridModel(_grid);
         _gridPresenter = new GridPresenter(UIEventBus, _gridModel);
-        SurroundingCellsFinder surroundingCellsFinder = new(_gridConfig);
-        _pathFindingSystem = new PathFinding(surroundingCellsFinder, _grid);
+        SurroundingCellsFinder surroundingCellsFinder = new();
+        _pathFindingSystem = new PathFinding(surroundingCellsFinder, _gridPresenter);
+
+        ConstructionSystem_V.Bind(new ConstructionSystem_P(_gridPresenter));
     }
 
     void Update()
@@ -45,11 +48,13 @@ public class ConstructionSceneService : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            var startCell = _gridModel.StartCell.GetCellPosition();
-            var endCell = _gridModel.EndCell.GetCellPosition();
+            Vector2Int startCell = new(1, 0);
+            Vector2Int endCell = new(9, 0);
             if (_pathFindingSystem.TryPathFind(startCell, endCell, out IReadOnlyList<Vector2Int> path))
             {
-                StartCoroutine(_gridPresenter.DisplayPath(path));
+                Debug.Log(path.Count);
+                if (path != null) foreach (var cell in path) { Debug.Log(cell); }
+                //StartCoroutine(_gridPresenter.DisplayPath(path));
             }
         }
     }

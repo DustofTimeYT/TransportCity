@@ -123,7 +123,6 @@ public class CameraControlScr : MonoBehaviour
     {
         if (Input.GetKey(_PrefConfig.RCDrag))
         {
-            Debug.Log(cameraPivotTranslate.localRotation.eulerAngles);
             var eulerAnglesX = cameraPivotRotate.localRotation.eulerAngles.x + GetMouseDeltaPos().y * _PrefConfig.RCSpeed;
             if (eulerAnglesX >= _minAngleAxisX && eulerAnglesX <= _maxAngleAxisX)
             {

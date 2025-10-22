@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 
 
-public interface Cargo
+public class Cargo
 {
 }

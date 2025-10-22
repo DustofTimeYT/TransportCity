@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PathFinding
 {
-    private SurroundingCellsFinder _surroundingCellsFinder;
+    private ISurroundingCellsFinder _finder;
 
-    private Dictionary<Vector2Int, CellPresenter> _grid;
+    private IGrid _grid;
     private Dictionary<Vector2Int,PathFindingCell> _openedList;
     private Dictionary<Vector2Int,PathFindingCell> _closedList;
 
-    public PathFinding(SurroundingCellsFinder surroundingCellsFinder, Dictionary<Vector2Int, CellPresenter> grid)
+    public PathFinding(ISurroundingCellsFinder surroundingCellsFinder, IGrid grid)
     {
-        _surroundingCellsFinder = surroundingCellsFinder;
+        _finder = surroundingCellsFinder;
         _grid = grid;
 
         _openedList = new Dictionary<Vector2Int, PathFindingCell>();
@@ -42,14 +42,12 @@ public class PathFinding
             if (currentCell.coordinates == end) { break; }
         }
 
+        Debug.Log(currentCell.coordinates);
+
         if (currentCell.coordinates == end)
         {    
-            Debug.Log("Path");
             path = CreatePath(start, currentCell);
-            foreach (var pathCell in path)
-            {
-                Debug.Log(pathCell);
-            }
+
             _closedList.Clear();
             _openedList.Clear();
         }
@@ -71,7 +69,7 @@ public class PathFinding
 
     private void ExplorationCells(PathFindingCell currentCell, Vector2Int endCellCoordinates)
     {
-        var aroundCells = _surroundingCellsFinder.FindSurroundingCells(currentCell.coordinates, _grid, _openedList);
+        var aroundCells = _finder.FindSurroundingCells(currentCell.coordinates, _grid, _openedList);
 
         foreach (PathFindingCell activeCell in aroundCells)
         {
@@ -87,10 +85,8 @@ public class PathFinding
     /// <param name="endCellCoordinates"> Координаты (x, y) целевой ячейки</param>
 
     private void ExplorationActiveCell(PathFindingCell activeCell, Vector2Int currentCellCoordinates, int currentPathLength, Vector2Int endCellCoordinates)
-    { 
+    {
         if (_closedList.ContainsKey(activeCell.coordinates)) { return; }
-
-        Debug.Log(activeCell.coordinates);
 
         if (!_openedList.ContainsKey(activeCell.coordinates))
         {
@@ -154,17 +150,16 @@ public class PathFinding
         return true;
     }
 
-    private IReadOnlyList<Vector2Int> CreatePath(Vector2Int startCell, PathFindingCell endCell)
+    private IReadOnlyList<Vector2Int> CreatePath(Vector2Int startCoords, PathFindingCell endCell)
     {
         List<Vector2Int> path = new List<Vector2Int>();
-        path.Add(endCell.coordinates);
-        Vector2Int cell = endCell.previousCell;
-
-        while (cell != startCell)
+        Vector2Int cell = endCell.coordinates;
+        do
         {
             path.Add(cell);
-            cell = _closedList[cell].previousCell;
-        }
+            cell = _closedList[cell].previousCellCoords;
+        } 
+        while (cell != startCoords);
 
         path.Add(cell);
         path.Reverse();

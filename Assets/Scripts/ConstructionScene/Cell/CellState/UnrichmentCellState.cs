@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 sealed class UnrichmentCellState : CellState
 {
-    public UnrichmentCellState(CellPresenter cell) : base(cell)
+    public UnrichmentCellState(RoadCellPresenter cell) : base(cell)
     {
     }
 

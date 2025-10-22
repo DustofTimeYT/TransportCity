@@ -9,5 +9,11 @@ public class CellConfig : ScriptableObject
 {
     [SerializeField] private CellData _data;
 
+    [field: SerializeField]
+    public GameObject CellPref { get; private set; }
+
+    [field: SerializeField]
+    public CellType CellType { get; private set; }
+
     public CellData Data { get => _data; }
 }

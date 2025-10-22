@@ -46,7 +46,7 @@ public class ConstructionSceneUI : MonoBehaviour
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                CellView cell = hit.collider.GetComponentInParent<CellView>();
+                RoadCellView cell = hit.collider.GetComponentInParent<RoadCellView>();
                 if (cell != null)
                 {
                     if (cell != null)

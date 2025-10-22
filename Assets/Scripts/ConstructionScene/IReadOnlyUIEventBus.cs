@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public interface IReadOnlyUIEventBus
 {
-    public event Action<CellPresenter> SetStartCell;
+    public event Action<RoadCellPresenter> SetStartCell;
 
-    public event Action<CellPresenter> SetEndCell;
+    public event Action<RoadCellPresenter> SetEndCell;
 }

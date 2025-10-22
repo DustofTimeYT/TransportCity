@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 215639332909165}
-  - component: {fileID: 5540044441903518649}
+  - component: {fileID: 6444668379375257559}
   m_Layer: 0
   m_Name: Road
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3003343487974857917}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5540044441903518649
+--- !u!114 &6444668379375257559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,11 +42,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2531182512796481631}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d18e2478ba75544e8f2287a886856fb, type: 3}
+  m_Script: {fileID: 11500000, guid: d125addfddad5224092794b3caf97cc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainRenderer: {fileID: 4962025866812053678}
-  size: {x: 1, y: 1}
+  _mainRenderer: {fileID: 0}
+  _defaulteColor: {fileID: 0}
+  _startColor: {fileID: 0}
+  _endColor: {fileID: 0}
+  _unrichmentColor: {fileID: 0}
+  _highlightColor: {fileID: 0}
+  _textMovementDifficulty: {fileID: 0}
 --- !u!1 &6222267674693995823
 GameObject:
   m_ObjectHideFlags: 0

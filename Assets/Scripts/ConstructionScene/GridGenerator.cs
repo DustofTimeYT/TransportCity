@@ -5,23 +5,20 @@ using UnityEngine;
 
 public class GridGenerator
 {
-    public static Dictionary<Vector2Int, CellPresenter> GenerateGridModel(GridConfig gridConfig, CellConfig cellConfig, CellView cellViewPrefab, UIEventBus UIEventBus)
+    public static Dictionary<Vector2Int, AbstractCellPresenter> GenerateGridModel(GridConfig gridConfig, CellConfig cellConfig, RoadCellView cellViewPrefab, UIEventBus UIEventBus)
     {
         GameObject GridGO = new GameObject("Grid");
-        Dictionary <Vector2Int, CellPresenter> grid = new();
+        Dictionary <Vector2Int, AbstractCellPresenter> grid = new();
 
         for (int x = 0; x < gridConfig.GridSize.x; x++)
         {
             for (int y = 0; y < gridConfig.GridSize.y; y++)
             {
-                CellView cellView = GameObject.Instantiate(cellViewPrefab, GridGO.transform);
-                CellModel cellModel = new CellModel(cellConfig.Data, cellView, new Vector2Int(x,y));
-                CellPresenter cellPresenter = new CellPresenter(cellModel, UIEventBus);
+                //RoadCellView cellView = GameObject.Instantiate(cellViewPrefab, GridGO.transform);
+                //RoadCellModel cellModel = new RoadCellModel(cellConfig.Data, new Vector2Int(x,y));
+                AbstractCellPresenter cellPresenter = new StructureCellPresenter(new Vector2Int(x, y), cellConfig, UIEventBus);
 
-                cellView.name = $"{cellView.name} {cellModel.CellCoordinates}";
-                cellView.Init(cellPresenter, cellModel.CellCoordinates);
-
-                grid.Add(cellModel.CellCoordinates, cellPresenter);
+                grid.Add(cellPresenter.GetCellPosition(), cellPresenter);
             }
         }
 

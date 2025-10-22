@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 sealed class StartCellState : CellState
 {
-    public StartCellState(CellPresenter cell) : base(cell)
+    public StartCellState(RoadCellPresenter cell) : base(cell)
     {
     }
 

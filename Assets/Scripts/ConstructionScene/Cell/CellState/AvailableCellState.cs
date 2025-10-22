@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 sealed class AvailableCellState : CellState
 {
-    public AvailableCellState(CellPresenter cell) : base(cell)
+    public AvailableCellState(RoadCellPresenter cell) : base(cell)
     {
     }
 

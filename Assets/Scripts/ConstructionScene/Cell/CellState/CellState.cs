@@ -6,9 +6,9 @@
 
 public abstract class CellState
 {
-    protected CellPresenter _cell;
+    protected RoadCellPresenter _cell;
 
-    public CellState(CellPresenter cell)
+    public CellState(RoadCellPresenter cell)
     {
         _cell = cell;
     }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 sealed class EndCellState : CellState
 {
-    public EndCellState(CellPresenter cell) : base(cell)
+    public EndCellState(RoadCellPresenter cell) : base(cell)
     {
     }
 

@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class UIEventBus : IReadOnlyUIEventBus
 {
-    public event Action<CellPresenter> SetStartCell;
+    public event Action<RoadCellPresenter> SetStartCell;
 
-    public event Action<CellPresenter> SetEndCell;
+    public event Action<RoadCellPresenter> SetEndCell;
 
-    public void TriggerSetStartCell(CellPresenter startCell)
+    public void TriggerSetStartCell(RoadCellPresenter startCell)
     {
         SetStartCell?.Invoke(startCell); 
     }
 
-    public void TriggerSetEndCell(CellPresenter endCell)
+    public void TriggerSetEndCell(RoadCellPresenter endCell)
     {
         SetEndCell?.Invoke(endCell);
     }
