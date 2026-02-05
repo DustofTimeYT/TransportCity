@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Gird;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ConstructionSystem_P
 {
-    private readonly ConstructionSystem_V _cS_V;
-    private readonly GridPresenter _grid;
+    private readonly IGrid _grid;
 
-    public ConstructionSystem_P(GridPresenter grid)
+    public ConstructionSystem_P(IGrid grid)
     {
         _grid = grid;
     }
@@ -20,15 +16,28 @@ public class ConstructionSystem_P
         return _grid.CheckAvaibleCoords(coords);
     }
 
-    public bool TryPlaceBuilding(Vector2Int coords, CellConfig cellConfig, out AbstractCellPresenter cell)
+    public void ShowTile(Vector3 position)
     {
-        /*if (!CheckAvaibleCoords(coords))
-        {
-            cell = null;
-            return false;
-        }*/
+        ChangeVisibility(position, true);
+    }
 
-        if (_grid.TryReplaceCell(coords, cellConfig, out cell)) return true;
+    public void HideTile(Vector3 position)
+    {
+        ChangeVisibility(position, false);
+    }
+
+    private void ChangeVisibility(Vector3 position3, bool isVisible)
+    {
+        Vector2Int position2Int = new Vector2Int(Mathf.RoundToInt(position3.x), Mathf.RoundToInt(position3.z));
+        if (CheckAvaibleCoords(position2Int))
+        {
+            _grid.ChangeVisibility(position2Int, isVisible);
+        }
+    }
+
+    public bool TryPlaceTile(Vector2Int coords, AbsTileConfig tileConfig)
+    {
+        if (_grid.TryReplaceTile(coords, tileConfig, out AbsTilePresenter tile)) return true;
         return false;
     }
 }

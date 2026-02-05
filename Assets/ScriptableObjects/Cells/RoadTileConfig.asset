@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7b1404506a23154ba0b93cc20c30efa, type: 3}
-  m_Name: GridConfig
+  m_Script: {fileID: 11500000, guid: acdd08d7ffe685c44bdcac8b054ea611, type: 3}
+  m_Name: RoadTileConfig
   m_EditorClassIdentifier: 
-  <GridSize>k__BackingField: {x: 10, y: 10}
+  <TilePref>k__BackingField: {fileID: 2531182512796481631, guid: cb020f9dd72a72041bcaacde604e95ca,
+    type: 3}
+  <TileType>k__BackingField: 1
+  <MovementDifficulty>k__BackingField: 10

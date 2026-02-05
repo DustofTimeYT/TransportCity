@@ -1,109 +1,86 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class ConstructionSystem_V : MonoBehaviour
 {
+    [Inject]
     private ConstructionSystem_P _cS_P;
-    [SerializeField] private CellsConfig _cellsConfig;
-    private GameObject _flyingCell;
-    private CellConfig _currentCellConfig;
+    [Inject]
+    private TilesConfig _tilesConfig;
+
+    private GameObject _flyingTile;
+    private AbsTileConfig _currentTileConfig;
     private Camera _mainCamera;
 
     [SerializeField] private Transform _container;
     [SerializeField] private GameObject _buttonPrefab;
 
+    private Plane groundPlane;
+    private Ray ray;
+
     private void Awake()
     {
         _mainCamera = Camera.main;
         CreateUIMenu();
+        groundPlane = new Plane(Vector3.up, Vector3.zero);
     }
-
-    public void Bind(ConstructionSystem_P cS_P)
-    {
-        _cS_P = cS_P;
-    }
-
-    private void CreateUIMenu()
-    {
-        CounstructionCellItem CCI;
-        foreach (var item in _cellsConfig.Cells)
-        {
-            CCI = Instantiate(_buttonPrefab, _container).GetComponent<CounstructionCellItem>();
-            CCI.Init(this,item);
-        }
-    }
-
-    public void StartPlacingConstruction(CellConfig cellConfig)
-    {
-        if (_flyingCell != null)
-        {
-            _currentCellConfig = null;
-            Destroy(_flyingCell);
-        }
-
-        _currentCellConfig = cellConfig;
-        _flyingCell = Instantiate(_currentCellConfig.CellPref);
-    }
-
-    public void CreateFlyCell()
-    {
-
-    }
-
     private void Update()
     {
-        if (_flyingCell != null)
+        if (_flyingTile != null)
         {
-            var groundPlane = new Plane(Vector3.up, Vector3.zero);
+            ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
-            var ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            if(groundPlane.Raycast(ray, out float position))
+            if (groundPlane.Raycast(ray, out float position))
             {
                 Vector3 worldPosition = ray.GetPoint(position);
 
-                var x = Mathf.RoundToInt(worldPosition.x);
-                var y = Mathf.RoundToInt(worldPosition.z);
+                Vector3Int newPos = new Vector3Int(Mathf.RoundToInt(worldPosition.x), 0, Mathf.RoundToInt(worldPosition.z));
 
-                _flyingCell.transform.position = new Vector3(x,0,y);
+                if (newPos != _flyingTile.transform.position)
+                {
+                    _cS_P.ShowTile(_flyingTile.transform.position);
 
-                bool _available = true;
-/*
-                if (Mathf.Abs(x) > gridSize.x - _flyingConstruction.size.x)
-                {
-                    _available = false;
-                }
-                if (Mathf.Abs(y) > gridSize.y - _flyingConstruction.size.y)
-                {
-                    _available = false;
+                    _flyingTile.transform.position = newPos;
+
+                    _cS_P.HideTile(newPos);
                 }
 
-                if (_available && IsPlaceTaken(x,y))
-                {
-                    _available = false ;
-                }
 
-                _flyingConstruction.SetTransparent(_available);
-
-*/
-                if (/*_available && */Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0))
                 {
-                    PlacingFlyingConstruction(x,y);
+                    PlaceFlyingTile(newPos.x, newPos.z);
                 }
 
             }
         }
     }
 
-    private void PlacingFlyingConstruction(int placeX, int placeY)
+    private void CreateUIMenu()
     {
-        if(_cS_P.TryPlaceBuilding(new Vector2Int (placeX, placeY), _currentCellConfig, out AbstractCellPresenter cell))
+        ItemSlotConstruction CCI;
+        foreach (var item in _tilesConfig.GetAllTiles())
         {
-            /*AbstractCellView cellView = Instantiate(_currentCellConfig.CellPref).GetComponent<AbstractCellView>();
-            Debug.Log(cellView);*/
-
-            //_flyingCell = null;
+            GameObject slot = Instantiate(_buttonPrefab, _container);
+            Instantiate(item.TilePref, slot.transform);
+            CCI = slot.GetComponent<ItemSlotConstruction>();
+            CCI.Init(this,item);
         }
+    }
+
+    public void StartPlacingTile(AbsTileConfig config)
+    {
+        if (_flyingTile != null)
+        {
+            _currentTileConfig = null;
+            Destroy(_flyingTile);
+        }
+
+        _currentTileConfig = config;
+        _flyingTile = Instantiate(_currentTileConfig.TilePref);
+    }
+
+    private void PlaceFlyingTile(int placeX, int placeY)
+    {
+        _cS_P.TryPlaceTile(new Vector2Int(placeX, placeY), _currentTileConfig);
     }
 }

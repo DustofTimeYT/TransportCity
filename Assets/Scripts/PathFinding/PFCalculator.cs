@@ -1,30 +1,33 @@
 using UnityEngine;
 
-public class PFCalculator
+namespace PathFindAlgo
 {
-    private static int _pathCost = 10;
-
-    /// <summary>
-    /// Метод рассчета длины пути до выбранной клетки
-    /// </summary>
-    /// <param name="currentCellPathLenght">Длина пути до предшествующей клетки</param>
-    /// <param name="movementDifficulty">Сложность перемещения по текущей клетке</param>
-    /// <returns>Длину пути до переданной клетки</returns>
-
-    public static int CalculatePathLenght(int currentCellPathLenght, int movementDifficulty)
+    public class PFCalculator
     {
-        return currentCellPathLenght + _pathCost * movementDifficulty;
-    }
+        private static int _pathCost = 10;
 
-    /// <summary>
-    /// Метод рассчета эвристического приближения с помощью манхэттенского расстояния 
-    /// </summary>
-    /// <param name="currentCell">Координаты (x, y) ячейки для которой рассчитывается приближение</param>
-    /// <param name="endCell">Координаты (x, y) целевой ячейки</param>
-    /// <returns>Эвристическое приближение текущей клетки</returns>
+        /// <summary>
+        /// Метод рассчета длины пути до выбранной клетки
+        /// </summary>
+        /// <param name="currentTilePathLenght">Длина пути до предшествующей клетки</param>
+        /// <param name="movementDifficulty">Сложность перемещения по текущей клетке</param>
+        /// <returns>Длину пути до переданной клетки</returns>
 
-    public static int CalculateHeuristicApproximation(Vector2Int currentCell, Vector2Int endCell)
-    {
-        return (Mathf.Abs(currentCell.x - endCell.x) + Mathf.Abs(currentCell.y - endCell.y)) * _pathCost;
+        public static int CalculatePathLenght(int currentTilePathLenght, int movementDifficulty)
+        {
+            return currentTilePathLenght + _pathCost * movementDifficulty;
+        }
+
+        /// <summary>
+        /// Метод рассчета эвристического приближения с помощью манхэттенского расстояния 
+        /// </summary>
+        /// <param name="currentTile">Координаты (x, y) ячейки для которой рассчитывается приближение</param>
+        /// <param name="endTile">Координаты (x, y) целевой ячейки</param>
+        /// <returns>Эвристическое приближение текущей клетки</returns>
+
+        public static int CalculateHeuristicApproximation(Vector2Int currentTile, Vector2Int endTile)
+        {
+            return (Mathf.Abs(currentTile.x - endTile.x) + Mathf.Abs(currentTile.y - endTile.y)) * _pathCost;
+        }
     }
 }
