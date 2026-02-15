@@ -5,27 +5,21 @@ namespace Transport
 {
     public class TransportPresenter : ITransport
     {
-        private readonly TransportConfig _transportConfig;
-        private TransportModel _trasportModel;
-        private TransportView _trasportView;
+        private TransportModel _model;
 
         public TransportPresenter(TransportConfig tConfig)
         {
-            _transportConfig = tConfig;
-            _trasportModel = new TransportModel(tConfig);
-            Load(_transportConfig.transportPref);
-            Debug.Log("Transport was creat");
+            _model = new TransportModel(tConfig);
         }
 
-        private void Load(GameObject transportPref)
+        public string GetName()
         {
-            _trasportView = new TransportView();
-            _trasportView.Init(transportPref, Vector2Int.zero);
+            return _model.Name;
         }
 
         public void SetRoute(RoutePresenter route)
         {
-            _trasportModel.SetRoute(route);
+            _model.SetRoute(route);
         }
     }
 }

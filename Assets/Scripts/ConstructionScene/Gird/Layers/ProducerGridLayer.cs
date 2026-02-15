@@ -1,37 +1,24 @@
-﻿
-using Grid;
+﻿using Grid;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class ProducerGridLayer : AbsGridLayer
+public class ProducerGridLayer : IProducerGrid
 {
-    private Dictionary<Vector2Int, IProducer> _tiles;
+    private GridLayer<IProducer> _gridLayer;
 
-    public ProducerGridLayer(GridPresenter presenter) : base(presenter)
+    public ProducerGridLayer(GridPresenter grid)
     {
+        _gridLayer = new(grid);
+        Debug.Log($"{this} was created");
     }
 
-    protected override void OnReplaceTile(AbsTilePresenter absTile)
+    public Dictionary<Vector2Int, IProducer> GetProducers()
     {
-        _tiles.Remove(absTile.GetTilePosition());
-
-        if (TryGetTileTypeOf<IProducer>(absTile, out IProducer tile))
-        {
-            _tiles.Add(absTile.GetTilePosition(), tile);
-        }
-
-        Debug.Log(_tiles.Count);
-    }
-
-    public override void Refresh()
-    {
-        _tiles = GetTilesTypeOf<IProducer>();
+        return _gridLayer.GetTiles();
     }
 
     public bool TryGetTile(Vector2Int tilePos, out IProducer tile)
     {
-        return _tiles.TryGetValue(tilePos, out tile);
+        return _gridLayer.TryGetTile(tilePos, out tile);
     }
 }

@@ -1,37 +1,39 @@
-﻿
-using Grid;
+﻿using Grid;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class GarageGridLayer : AbsGridLayer
+public class GarageGridLayer : IGarageGrid
 {
-    private Dictionary<Vector2Int, IGarage> _tiles;
+    private GridLayer<IGarage> _gridLayer;
 
-    public GarageGridLayer(GridPresenter presenter) : base(presenter)
+    public GarageGridLayer(GridPresenter grid)
     {
+        _gridLayer = new(grid);
+
+        Subscribe();
+        Debug.Log($"{this} was created");
     }
 
-    protected override void OnReplaceTile(AbsTilePresenter absTile)
+    private void Subscribe()
     {
-        _tiles.Remove(absTile.GetTilePosition());
-
-        if (TryGetTileTypeOf<IGarage>(absTile, out IGarage tile))
-        {
-            _tiles.Add(absTile.GetTilePosition(), tile);
-        }
-
-        Debug.Log(_tiles.Count);
+        _gridLayer.UpdateLayer += OnUpdateLayer;
     }
 
-    public override void Refresh()
+    private void OnUpdateLayer()
     {
-        _tiles = GetTilesTypeOf<IGarage>();
+        UpdateLayer?.Invoke();
+    }
+
+    public Dictionary<Vector2Int, IGarage> GetGarages()
+    {
+        return _gridLayer.GetTiles();
     }
 
     public bool TryGetTile(Vector2Int tilePos, out IGarage tile)
     {
-        return _tiles.TryGetValue(tilePos, out tile);
+        return _gridLayer.TryGetTile(tilePos, out tile);
     }
+    
+    public event Action UpdateLayer;
 }

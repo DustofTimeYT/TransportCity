@@ -9,5 +9,8 @@ using UnityEngine;
 public class ProsumerTileConfig : AbsTileConfig
 {
     [field: SerializeField]
-    public List<Product> ProducerProduct {  get; private set; }
+    public List<ProductType> ProducerProduct {  get; private set; }
+
+    [field: SerializeField]
+    public List<ProductType> ConsumerProduct { get; private set; }
 }

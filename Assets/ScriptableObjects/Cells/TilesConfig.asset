@@ -17,4 +17,8 @@ MonoBehaviour:
   <RoadTiles>k__BackingField:
   - {fileID: 11400000, guid: 71ca1d098b03b4741a7b1a8745348e2a, type: 2}
   <StructureTiles>k__BackingField: []
-  <ProsumerTiles>k__BackingField: []
+  <ProsumerTiles>k__BackingField:
+  - {fileID: 11400000, guid: ead7a58aecf7c3247b138451c4d25e79, type: 2}
+  - {fileID: 11400000, guid: 15b16908d48c4e344bc300f231af72cb, type: 2}
+  <GarageTiles>k__BackingField:
+  - {fileID: 11400000, guid: 3df1a6d045a77194bb975506947182d8, type: 2}

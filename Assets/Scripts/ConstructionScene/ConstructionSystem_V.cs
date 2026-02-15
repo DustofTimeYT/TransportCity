@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class ConstructionSystem_V : MonoBehaviour
@@ -24,8 +25,11 @@ public class ConstructionSystem_V : MonoBehaviour
         CreateUIMenu();
         groundPlane = new Plane(Vector3.up, Vector3.zero);
     }
+
     private void Update()
     {
+        Cancel();
+
         if (_flyingTile != null)
         {
             ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -55,13 +59,28 @@ public class ConstructionSystem_V : MonoBehaviour
         }
     }
 
+    private void Cancel()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            if (_flyingTile != null)
+            {
+                _cS_P.ShowTile(_flyingTile.transform.position);
+                Destroy(_flyingTile);
+                _currentTileConfig = null;
+                _flyingTile = null;
+            }
+        }
+    }
+
     private void CreateUIMenu()
     {
         ItemSlotConstruction CCI;
         foreach (var item in _tilesConfig.GetAllTiles())
         {
-            GameObject slot = Instantiate(_buttonPrefab, _container);
-            Instantiate(item.TilePref, slot.transform);
+            GameObject slot = Instantiate(_buttonPrefab);
+            slot.transform.SetParent(_container);
+            //Instantiate(item.TilePref, slot.transform);
             CCI = slot.GetComponent<ItemSlotConstruction>();
             CCI.Init(this,item);
         }

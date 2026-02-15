@@ -10,7 +10,7 @@ public class GarageTilePresenter : AbsTilePresenter, IMovable, IGarage
 
     public GarageTilePresenter(Vector2Int coords, AbsTileConfig config, Transform parent)
     {
-        if (config.TileType != TileType.Prosumer) return;
+        if (config.TileType != TileType.Garage) return;
         _model = new GarageTileModel(config, coords);
         InstantiateView(config.TilePref, parent);
     }
@@ -31,9 +31,19 @@ public class GarageTilePresenter : AbsTilePresenter, IMovable, IGarage
         UpdateView?.Invoke(_model);
     }
 
-    public IReadOnlyList<string> GetTransports()
+    List<ITransport> IGarage.GetTransports()
     {
-        throw new NotImplementedException();
+        return _model.Transports;
+    }
+
+    public string GetName()
+    {
+        return _model.Name;
+    }
+
+    public void AddTransport(ITransport transport)
+    {
+        _model.Transports.Add(transport);
     }
 
     public override event Action<AbsTileModel> UpdateView;

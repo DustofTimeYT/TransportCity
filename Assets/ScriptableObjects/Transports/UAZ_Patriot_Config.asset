@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad3ea72256b6074a8419c3bab1586b8, type: 3}
+  m_Name: UAZ_Patriot_Config
+  m_EditorClassIdentifier: Assembly-CSharp::TransportConfig
+  <Name>k__BackingField: UAZ Patriot
+  <MaxSpeed>k__BackingField: 100
+  <MaxCapacity>k__BackingField: 2
+  <transportPref>k__BackingField: {fileID: 6382711455717498652, guid: b11a7555e3e706840b0af6b633837003,
+    type: 3}

@@ -1,9 +1,10 @@
 ﻿using AbsTile;
 using ProsumerTile;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ProsumerTilePresenter : AbsTilePresenter
+public class ProsumerTilePresenter : AbsTilePresenter, IConsumer, IProducer
 {
     readonly private ProsumerTileModel _model;
     public ProsumerTilePresenter(Vector2Int coords, AbsTileConfig config, Transform parent)
@@ -15,8 +16,28 @@ public class ProsumerTilePresenter : AbsTilePresenter
 
     public override Vector2Int GetTilePosition()
     {
-        throw new NotImplementedException();
+        return _model.TileCoords;
     }
-    
+
+    public string GetName()
+    {
+        return _model.Name;
+    }
+
+    public List<ProductType> GetConsumerMaterials()
+    {
+        return _model.ConsumerProduct;
+    }
+
+    public bool CheckConsumerMaterial(ProductType product)
+    {
+        return _model.ConsumerProduct.Contains(product);
+    }
+
+    public List<ProductType> GetProducerMaterials()
+    {
+        return _model.ProducerProduct;
+    }
+
     public override event Action<AbsTileModel> UpdateView;
 }

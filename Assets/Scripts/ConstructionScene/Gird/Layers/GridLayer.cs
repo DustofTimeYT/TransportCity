@@ -1,5 +1,5 @@
-﻿
-using Grid;
+﻿using Grid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -49,18 +49,39 @@ public class GridLayer<T> where T : class
 
     private void OnReplaceTile(AbsTilePresenter absTile)
     {
-        _tiles.Remove(absTile.GetTilePosition());
+        bool IsUpdate = false;
+
+        if (_tiles.Remove(absTile.GetTilePosition()))
+        {
+            IsUpdate = true;
+        }
 
         if (TryGetTile(absTile, out T tile))
         {
             _tiles.Add(absTile.GetTilePosition(), tile);
+            IsUpdate = true;
         }
 
-        Debug.Log(_tiles.Count);
+        IsChangedLayer(IsUpdate);
+    }
+
+    private void IsChangedLayer(bool IsUpdate)
+    {
+        if (IsUpdate)
+        {
+            UpdateLayer?.Invoke();
+        }
     }
 
     public bool TryGetTile(Vector2Int tilePos, out T tile)
     {
         return _tiles.TryGetValue(tilePos, out tile);
     }
+
+    public Dictionary<Vector2Int, T> GetTiles()
+    {
+        return _tiles;
+    }
+
+    public event Action UpdateLayer;
 }

@@ -2,5 +2,9 @@
 
 public interface IGarage
 {
-    public IReadOnlyList<string> GetTransports();
+    public List<ITransport> GetTransports();
+
+    public void AddTransport(ITransport transport);
+
+    public string GetName();
 }

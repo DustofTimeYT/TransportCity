@@ -11,10 +11,9 @@ public class RoadTileModel : AbsTileModel
 
     public int MovementDifficulty { get; private set; }
 
-    public RoadTileModel(AbsTileConfig config, Vector2Int coords) : base(coords)
+    public RoadTileModel(AbsTileConfig config, Vector2Int coords) : base(coords, config)
     {
         _config = ValidateConfigType<RoadTileConfig>(config);
-
         SetDefault();
     }
 

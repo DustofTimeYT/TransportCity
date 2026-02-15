@@ -52,10 +52,18 @@ namespace Grid
                         newTile = new StructureTilePresenter(tile.GetTilePosition(), tileConfig, _gridGO);
                         break;
 
+                    case TileType.Prosumer:
+                        newTile = new ProsumerTilePresenter(tile.GetTilePosition(), tileConfig, _gridGO);
+                        break;
+
+                    case TileType.Garage:
+                        newTile = new GarageTilePresenter(tile.GetTilePosition(), tileConfig, _gridGO);
+                        break;
+
                     default:
                         newTile = null;
                         Debug.LogError("Tile was created without Type");
-                        break;
+                        return false;
                 }
 
                 if (_model.TryReplaceTile(newTile))

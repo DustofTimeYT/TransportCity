@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class TransportCatalog : MonoBehaviour
+[CreateAssetMenu(fileName = "TransportCatalog", menuName = "ScriptableObjects/TransportCatalog", order = 1)]
+public class TransportCatalog : ScriptableObject
 {
-   
-    public List<TransportConfig> transports;
+    [field: SerializeField]
+    public List<TransportConfig> Transports {  get; private set; }
 }

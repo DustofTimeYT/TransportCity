@@ -8,6 +8,9 @@ using UnityEngine;
 public abstract class AbsTileConfig : ScriptableObject
 {
     [field: SerializeField]
+    public string Name{ get; private set; }
+
+    [field: SerializeField]
     public GameObject TilePref { get; private set; }
 
     [field: SerializeField]

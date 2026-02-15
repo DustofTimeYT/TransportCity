@@ -21,6 +21,9 @@ public class TilesConfig : ScriptableObject
     [field: SerializeField]
     public List<AbsTileConfig> ProsumerTiles { get; private set; }
 
+    [field: SerializeField]
+    public List<GarageTileConfig> GarageTiles { get; private set; }
+
     public List<AbsTileConfig> GetAllTiles()
     {
         List <AbsTileConfig> Tiles = new();
@@ -29,55 +32,46 @@ public class TilesConfig : ScriptableObject
         Tiles.AddRange(GetRoadTiles());
         Tiles.AddRange(GetStructureTiles());
         Tiles.AddRange(GetProsumerTiles());
+        Tiles.AddRange(GetGarageTiles());
 
         return Tiles;
+    }
+
+    private List<AbsTileConfig> ToAbsTileConfig<T>(List<T> tiles) where T : AbsTileConfig
+    {
+        List<AbsTileConfig> newTiles = new();
+
+        foreach (var tile in tiles)
+        {
+            newTiles.Add(tile);
+        }
+
+        return newTiles;
     }
 
     public List<AbsTileConfig> GetDefaultTiles()
     {
-        List<AbsTileConfig> Tiles = new();
-
-        foreach (var tile in DefaultTiles)
-        {
-            Tiles.Add(tile);
-        }
-
-        return Tiles;
+        return DefaultTiles;
     }
 
     public List<AbsTileConfig> GetRoadTiles()
     {
-        List<AbsTileConfig> Tiles = new();
-
-        foreach (var tile in RoadTiles)
-        {
-            Tiles.Add(tile);
-        }
-
-        return Tiles;
+        return ToAbsTileConfig(RoadTiles);
     }
 
     public List<AbsTileConfig> GetStructureTiles()
     {
-        List<AbsTileConfig> Tiles = new();
+        return StructureTiles;
 
-        foreach (var tile in StructureTiles)
-        {
-            Tiles.Add(tile);
-        }
-
-        return Tiles;
     }
 
     public List<AbsTileConfig> GetProsumerTiles()
     {
-        List<AbsTileConfig> Tiles = new();
+        return ToAbsTileConfig(ProsumerTiles);
+    }
 
-        foreach (var tile in ProsumerTiles)
-        {
-            Tiles.Add(tile);
-        }
-
-        return Tiles;
+    public List<AbsTileConfig> GetGarageTiles()
+    {
+        return ToAbsTileConfig(GarageTiles);
     }
 }
