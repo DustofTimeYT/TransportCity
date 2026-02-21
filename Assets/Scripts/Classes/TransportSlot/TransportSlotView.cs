@@ -4,18 +4,30 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TransportSlotView : MonoBehaviour, IPointerClickHandler , IPointerEnterHandler, IPointerExitHandler
+public class TransportSlotView : MonoBehaviour, IView<TransportSlotPresenter>, IPointerClickHandler , IPointerEnterHandler, IPointerExitHandler
 {
     private TransportSlotPresenter _presenter;
 
     [SerializeField] private Image _image;
     [SerializeField] private TextMeshProUGUI _title;
+    [SerializeField] private TextMeshProUGUI _cost;
+
 
 
     public void Bind(TransportSlotPresenter presenter)
     {
         _presenter = presenter;
         UpdateView();
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
     }
 
     public void OnClick()
@@ -43,5 +55,6 @@ public class TransportSlotView : MonoBehaviour, IPointerClickHandler , IPointerE
     {
         _image.color = new Color(255, 255, 255, 0f);
         _title.text = _presenter.GetName();
+        _cost.text = _presenter.GetCost();
     }
 }

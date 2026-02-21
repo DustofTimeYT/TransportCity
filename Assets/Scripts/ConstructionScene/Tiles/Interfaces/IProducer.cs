@@ -12,4 +12,6 @@ public interface IProducer
     public string GetName();
 
     public List<ProductType> GetProducerMaterials();
+
+    public List<ICargoItem> GetCargo(RoutePresenter route);
 }

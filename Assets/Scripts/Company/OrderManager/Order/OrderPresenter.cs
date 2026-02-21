@@ -14,6 +14,11 @@
             return _model.Contract;
         }
 
+        public int GetOrderNumber()
+        {
+            return _model.OrderNumber;
+        }
+
         public void SetDeliveredAmount(int amount)
         {
             _model.TrySetDeliveredAmount(amount);
@@ -26,7 +31,7 @@
 
         public int GetRemainingAmount()
         {
-            return _model.Contract.GetDeliveryAmount() - _model.DeliveredAmount;
+            return GetTotalAmount() - GetDeliveredAmount();
         }
 
         public int GetTotalAmount()
@@ -39,5 +44,23 @@
             return _model.Transport;
         }
 
+        public ProductType GetDeliveredItem()
+        {
+            return _model.Contract.GetDeliveryItem();
+        }
+
+        public void SetTransport(ITransport transport)
+        {
+            _model.SetTransport(transport);
+        }
+
+        public bool IsDelivered()
+        {
+            if (GetRemainingAmount() == 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

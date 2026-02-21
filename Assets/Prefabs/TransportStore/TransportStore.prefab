@@ -96,11 +96,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a06052f2545324f9d024a55c233829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slotAmount: 10
-  TransportSlotPref: {fileID: 8942761662236141400, guid: fe67fd8678fd3bb48883d3b6cb652108,
+  _lineAmount: 10
+  _linePref: {fileID: 8942761662236141400, guid: fe67fd8678fd3bb48883d3b6cb652108,
     type: 3}
-  TransportSlotContainer: {fileID: 367703151392426128}
-  GarageDropdown: {fileID: 8933911668508818406}
+  _linesContainer: {fileID: 367703151392426128}
+  _garageDropdown: {fileID: 8525525087762768963}
 --- !u!114 &1560549619449029188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 9010506957309338263}
   - component: {fileID: 291983994374968168}
   - component: {fileID: 8933911668508818406}
+  - component: {fileID: 8525525087762768963}
   m_Layer: 5
   m_Name: SelectGarageDropdown
   m_TagString: Untagged
@@ -258,9 +259,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6791915804472646679}
-        m_TargetAssemblyTypeName: TransportStoreView, Assembly-CSharp
-        m_MethodName: ChangeSelectedGarage
+      - m_Target: {fileID: 8525525087762768963}
+        m_TargetAssemblyTypeName: ExtendedDropdown, Assembly-CSharp
+        m_MethodName: ChangeSelectedOption
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -271,6 +272,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_AlphaFadeSpeed: 0.15
+--- !u!114 &8525525087762768963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671403305314313252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41d389451cf2ac344a8e74a9e57272d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dropdown: {fileID: 8933911668508818406}
+  _defaultTextOption: None
 --- !u!1 &1150109078901476236
 GameObject:
   m_ObjectHideFlags: 0

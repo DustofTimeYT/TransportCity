@@ -12,12 +12,15 @@ namespace Contract
 
         public int Amount { get; private set; }
 
-        public ContractModel(IProducer producer, IConsumer consumer, ProductType product, int amount)
+        public int MoneyAmount { get; private set; }
+
+        public ContractModel(IProducer producer, IConsumer consumer, ProductType product, int amount, int moneyAmount)
         {
             Producer = producer;
             Consumer = consumer;
             DeliveryItem = product;
             Amount = amount;
+            MoneyAmount = moneyAmount;
         }
     }
 }

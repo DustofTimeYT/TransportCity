@@ -6,9 +6,9 @@ namespace Contract
     {
         private ContractModel _model;
 
-        public ContractPresenter(IProducer producer, IConsumer consumer, ProductType product, int amount)
+        public ContractPresenter(IProducer producer, IConsumer consumer, ProductType product, int amount, int moneyAmount)
         {
-            _model = new ContractModel(producer, consumer, product, amount);
+            _model = new ContractModel(producer, consumer, product, amount, moneyAmount);
         }
 
         public IProducer GetProducer()
@@ -37,6 +37,11 @@ namespace Contract
         public int GetDeliveryAmount()
         {
             return _model.Amount;
+        }
+
+        public int GetMoneyAmount()
+        {
+            return _model.MoneyAmount;
         }
     }
 }

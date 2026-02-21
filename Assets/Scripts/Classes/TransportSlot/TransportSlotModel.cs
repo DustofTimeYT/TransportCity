@@ -18,6 +18,11 @@ public class TransportSlotModel
         return _transportConfig.Name;
     }
 
+    public int GetCost()
+    {
+        return _transportConfig.Cost;
+    }
+
     public TransportConfig GetTransportConfig()
     {
         return _transportConfig;

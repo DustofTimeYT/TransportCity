@@ -45,8 +45,6 @@ namespace PathFindAlgo
                 if (currentCell.coordinates == end) { break; }
             }
 
-            Debug.Log(currentCell.coordinates);
-
             if (currentCell.coordinates == end)
             {
                 path = CreatePath(start, currentCell);

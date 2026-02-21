@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
-public interface IGarage
+public interface IGarage : IOption
 {
+    public Vector2Int GetTilePosition();
+
     public List<ITransport> GetTransports();
 
-    public void AddTransport(ITransport transport);
+    public bool FindTransport(string name, out ITransport transport);
 
-    public string GetName();
+    public void AddTransport(ITransport transport);
 }

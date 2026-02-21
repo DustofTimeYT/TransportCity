@@ -11,15 +11,21 @@ namespace Transport
 
         private static Dictionary<string, int> _transportNames = new Dictionary<string, int>();
 
+        public Vector2Int Position { get; private set; }
+        public TransportStatus Status { get; private set; }
+        public IGarage Garage { get; private set; }
         public string Name { get; private set; }
         public int MaxSpeed { get; private set; }
         public int MaxCapacity { get; private set; }
 
+        public List<ICargoItem> Cargos { get; private set; }
+
         public RoutePresenter Route { get; private set; }
 
-        public TransportModel(TransportConfig config)
+        public TransportModel(TransportConfig config, IGarage garage)
         {
             _config = config;
+            SetGarage(garage);
             SetDefault();
         }
 
@@ -28,6 +34,8 @@ namespace Transport
             SetValidName();
             MaxSpeed = _config.MaxSpeed;
             MaxCapacity = _config.MaxCapacity;
+            SetPosition(Garage.GetTilePosition());
+            SetStatus(TransportStatus.Idle);
         }
 
         private void SetValidName()
@@ -54,10 +62,32 @@ namespace Transport
             }
         }
 
+        public void SetStatus(TransportStatus status)
+        {
+            Status = status;
+        }
+
+        public void SetPosition(Vector2Int position)
+        {
+            Position = position;
+        }
+
+        public void SetGarage(IGarage garage)
+        {
+            Garage = garage;
+        }
 
         public void SetRoute(RoutePresenter route)
         {
             Route = route;
+        }
+
+        public void SetCargo(List<ICargoItem> cargos)
+        {
+            if (cargos.Count <= MaxCapacity)
+            {
+                Cargos = cargos;
+            }
         }
     }
 }

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67425109ae4a24f4da0cb9661b9ecce5, type: 3}
   m_Name: Prosum1
   m_EditorClassIdentifier: 
+  <Name>k__BackingField: Wooden Store
   <TilePref>k__BackingField: {fileID: 3903697623614920709, guid: 86a1204920a899e449f0330ff0249ad6,
     type: 3}
   <TileType>k__BackingField: 5
-  <Name>k__BackingField: Wooden Store
+  <MovementDifficulty>k__BackingField: 1
   <ProducerProduct>k__BackingField: 00000000
   <ConsumerProduct>k__BackingField: 01000000

@@ -69,7 +69,8 @@ namespace ContractSystem
             {
                 IConsumer consumer = relevantConsumers[Random.Range(0, relevantConsumers.Count - 1)];
                 int amount = Random.Range(1, 20);
-                contract = new ContractPresenter(producer, consumer, product, amount);
+                int moneyAmount = Random.Range(100, 2000);
+                contract = new ContractPresenter(producer, consumer, product, amount, moneyAmount);
                 return true;
             }
             else

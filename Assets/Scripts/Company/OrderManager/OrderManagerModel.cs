@@ -1,18 +1,20 @@
-﻿using Order;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace OrderManager
 {
     public class OrderManagerModel
     {
-        public List<IContract> Contracts {  get; private set; }
+        public List<IContract> Contracts { get; private set; }
 
-        public List<OrderPresenter> Orders { get; private set; }
+        public Dictionary<int, IOrder> Orders { get; private set; }
+
+        public List<RoutePresenter> Routes { get; private set; }
 
         public OrderManagerModel()
         {
-            Contracts = new List<IContract>();
-            Orders = new List<OrderPresenter>();
+            Contracts = new();
+            Orders = new();
+            Routes = new();
         }
     }
 }

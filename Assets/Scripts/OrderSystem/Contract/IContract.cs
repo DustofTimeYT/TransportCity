@@ -7,4 +7,7 @@
     public ProductType GetDeliveryItem();
 
     public int GetDeliveryAmount();
+
+    public int GetMoneyAmount();
+
 }

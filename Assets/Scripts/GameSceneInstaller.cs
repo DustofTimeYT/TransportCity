@@ -4,26 +4,38 @@ using PathFindAlgo;
 using UnityEngine;
 using Zenject;
 using GarageManager;
+using OrderManager;
 
 
 public class GameSceneInstaller : MonoInstaller
 {
+    [SerializeField] private BankConfig _bankConfig;
     [SerializeField] private GridConfig _gridConfig;
     [SerializeField] private TilesConfig _tilesConfig;
     [SerializeField] private TransportCatalog _transportCatalog;
 
+    [SerializeField] private BankView _bankView;
     [SerializeField] private ConstructionSystem_V _constructionSystem_V;
     [SerializeField] private ContractBoardView _contractBoardView;
     [SerializeField] private TransportStoreView _transportStoreView;
+    [SerializeField] private OrderMenuView _orderMenuView;
     public override void InstallBindings()
     {
         BindEventBus();
+        BindBank();
         BindGrid();
         BindPathFind();
         BindConstructionSystem();
-        BindContractManager();
+        BindOrderManager();
         BindContractBoard();
         BindTransportStore();
+    }
+
+    private void BindBank()
+    {
+        Container.Bind<BankConfig>().FromInstance(_bankConfig).AsSingle();
+        Container.BindInterfacesAndSelfTo<BankPresenter>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<BankView>().FromInstance(_bankView).AsSingle();
     }
 
     private void BindGrid()
@@ -62,9 +74,17 @@ public class GameSceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<ContractBoardView>().FromInstance(_contractBoardView).AsSingle();
     }
 
-    private void BindContractManager()
+    private void BindOrderManager()
     {
-        Container.Bind<IOrderManager>().To<OrderManagerPresenter>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<OrderManagerPresenter>().FromNew().AsSingle();
+        BindOrderMenu();
+    }
+
+    private void BindOrderMenu()
+    {
+        Container.BindInterfacesAndSelfTo<OrderMenuPresenter>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<OrderMenuView>().FromInstance(_orderMenuView).AsSingle();
+
     }
 
     private void BindTransportStore()

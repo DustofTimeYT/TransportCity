@@ -15,5 +15,6 @@ MonoBehaviour:
   <Name>k__BackingField: KAMAZ
   <MaxSpeed>k__BackingField: 90
   <MaxCapacity>k__BackingField: 16
+  <Cost>k__BackingField: 50000
   <transportPref>k__BackingField: {fileID: 4456882877045051445, guid: b67df4deac16ca64ca62909b023c6f13,
     type: 3}

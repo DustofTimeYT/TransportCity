@@ -2,7 +2,11 @@
 {
     public class OrderModel
     {
+        private static int OrderId = 0;
+
         public IContract Contract { get; private set; }
+
+        public int OrderNumber { get; private set; }
 
         public int DeliveredAmount { get; private set; }
 
@@ -12,6 +16,13 @@
         {
             Contract = contract;
             DeliveredAmount = 0;
+            SetOrderNumber();
+        }
+
+        private void SetOrderNumber()
+        {
+            OrderId += 1;
+            OrderNumber = OrderId;
         }
 
         public bool TrySetDeliveredAmount(int deliveredAmount)
@@ -26,8 +37,13 @@
                 return false;
             }
 
-            DeliveredAmount = deliveredAmount;
+            DeliveredAmount += deliveredAmount;
             return true;
+        }
+
+        public void SetTransport(ITransport transport)
+        {
+            Transport = transport;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-public interface ICargo
+public interface ICargoItem
 {
     public ProductType GetProductType();
 }

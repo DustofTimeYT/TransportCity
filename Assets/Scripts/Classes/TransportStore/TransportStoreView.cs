@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AbsMenu;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Transport;
@@ -7,131 +9,39 @@ using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Zenject;
 
-public class TransportStoreView : MonoBehaviour
+public class TransportStoreView : AbsMenuView<TransportStorePresenter, TransportSlotPresenter, TransportSlotView>
 {
-    [Inject]
-    private TransportStorePresenter _presenter;
-
-    private List<TransportSlotView> _tSViews;
-
-    private int _lastSlotIndex;
-
-    [SerializeField] private int _slotAmount;
-
     [SerializeField]
-    private GameObject TransportSlotPref;
+    private ExtendedDropdown _garageDropdown;
 
-    [SerializeField]
-    private Transform TransportSlotContainer;
-
-    [SerializeField]
-    private Dropdown GarageDropdown;
-
-    private void Start()
+    protected override void Init()
     {
-        _tSViews = new List<TransportSlotView>();
-        _lastSlotIndex = 0;
-        UpdateTransportSlots();
-        UpdateGarageDropdown();
-
-        Subscribe();
+        base.Init();
+        _garageDropdown.Init();
     }
 
-    private void Subscribe()
+    protected override void OnUpdateView()
     {
-        _presenter.RefreshGarages += OnRefreshGarages;
+        base.OnUpdateView();
+        RefreshGarages();
     }
 
-    private void OnRefreshGarages()
+    protected override void Subscribe()
     {
-        UpdateGarageDropdown();
+        base.Subscribe();
+        _garageDropdown.SelectOption += OnSelectGarage;   
     }
 
-    private void UpdateGarageDropdown()
+    private void OnSelectGarage(string garage)
     {
-        GarageDropdown.ClearOptions();
-        GarageDropdown.AddOptions(_presenter.GetGarages());
-        GarageDropdown.RefreshShownValue();
-
-        SetSelectedGarage();
+        _presenter.SetSelectedGarage(garage);
     }
 
-    private void SetSelectedGarage()
+    private void RefreshGarages()
     {
-        IGarage selectedGarage = _presenter.GetSelectedGarage();
-        if (selectedGarage != null) 
-        {
-            string selectedGarageName = selectedGarage.GetName();
-        
-            List<Dropdown.OptionData> options = GarageDropdown.options.ToList();
-            foreach (Dropdown.OptionData option in options)
-            {
-                if (option.text == selectedGarageName)
-                {
-                    GarageDropdown.SetValueWithoutNotify(options.IndexOf(option));
-                    return;
-                }
-            }
-        }
-
-        if (GarageDropdown.options.Count == 0)
-        {
-            _presenter.SetSelectedGarage(null);
-        }
-        else
-        {
-            _presenter.SetSelectedGarage(GarageDropdown.options[0].text);
-        }
+        _garageDropdown.UpdateDropdownOptions(_presenter.GetGarages());
     }
 
-    public void NextPage()
-    {
-        if (_lastSlotIndex < _presenter.GetTransportSlots().Count - _slotAmount)
-        {
-            _lastSlotIndex = _lastSlotIndex + _slotAmount;
-        }
-        UpdateTransportSlots();
-    }
-    public void PreviousPage()
-    {
-        _lastSlotIndex = _lastSlotIndex - _slotAmount;
-        if (_lastSlotIndex < 0)
-        {
-            _lastSlotIndex = 0;
-        }
-        UpdateTransportSlots();
-    }
-
-    private void UpdateTransportSlots()
-    {
-        int index = 0;
-        foreach (TransportSlotPresenter transportSlot in _presenter.GetTransportSlots().Skip(_lastSlotIndex).Take(_slotAmount))
-        {
-            UpdateTransportSlot(transportSlot, index);
-            index++;
-        }
-    }
-
-    private void UpdateTransportSlot(TransportSlotPresenter transportSlot, int index)
-    {
-        if(_tSViews.Count < _slotAmount)
-        {
-            TransportSlotView TSView = Instantiate(TransportSlotPref, TransportSlotContainer).GetComponent<TransportSlotView>();
-            if (TSView == null)
-            {
-                Debug.LogError("TransportSlotView cannot be NULL");
-                return;
-            }
-            _tSViews.Add(TSView);
-        }
-        _tSViews[index].Bind(transportSlot);
-
-    }
-
-    public void ChangeSelectedGarage()
-    {
-        _presenter.SetSelectedGarage(GarageDropdown.captionText.text);
-    }
 
     public void BuyTransport()
     {

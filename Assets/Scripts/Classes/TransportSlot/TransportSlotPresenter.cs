@@ -21,6 +21,11 @@ public class TransportSlotPresenter
         return _model.GetName();
     }
 
+    public string GetCost()
+    {
+        return $"{_model.GetCost()} rub";
+    }
+
     public void OnClick()
     {
         _transportStore.SetSelectedTransport(_model.GetTransportConfig());

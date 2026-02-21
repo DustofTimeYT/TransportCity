@@ -31,7 +31,7 @@ public class GarageTilePresenter : AbsTilePresenter, IMovable, IGarage
         UpdateView?.Invoke(_model);
     }
 
-    List<ITransport> IGarage.GetTransports()
+    public List<ITransport> GetTransports()
     {
         return _model.Transports;
     }
@@ -45,6 +45,21 @@ public class GarageTilePresenter : AbsTilePresenter, IMovable, IGarage
     {
         _model.Transports.Add(transport);
     }
+
+    public bool FindTransport(string name, out ITransport iTransport)
+    {
+        iTransport = null;
+        foreach (ITransport transport in GetTransports())
+        {
+            if (transport.GetName() == name)
+            {
+                iTransport = transport;
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public override event Action<AbsTileModel> UpdateView;
 }

@@ -14,4 +14,6 @@ public interface IConsumer
     public List<ProductType> GetConsumerMaterials();
 
     public bool CheckConsumerMaterial(ProductType product);
+
+    public void HandOverCargo(List<ICargoItem> cargo, RoutePresenter route);
 }

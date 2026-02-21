@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProsumerTilePresenter : AbsTilePresenter, IConsumer, IProducer
+public class ProsumerTilePresenter : AbsTilePresenter, IConsumer, IProducer, IMovable
 {
     readonly private ProsumerTileModel _model;
     public ProsumerTilePresenter(Vector2Int coords, AbsTileConfig config, Transform parent)
@@ -37,6 +37,34 @@ public class ProsumerTilePresenter : AbsTilePresenter, IConsumer, IProducer
     public List<ProductType> GetProducerMaterials()
     {
         return _model.ProducerProduct;
+    }
+
+    public void SetMovementDifficulty(int value)
+    {
+        _model.TrySetMovementDifficulty(value);
+    }
+
+    public int GetMovementDifficulty()
+    {
+        return _model.MovementDifficulty;
+    }
+
+    public void HandOverCargo(List<ICargoItem> cargo, RoutePresenter route)
+    {
+        Debug.Log("Unload");
+        route.RouteIsOver();
+    }
+
+    public List<ICargoItem> GetCargo(RoutePresenter route)
+    {
+        List <ICargoItem> cargos = new List <ICargoItem>();
+
+        for (int i = 1; i == route.GetCargoAmount(); i++)
+        {
+            cargos.Add(new CargoItem(route.GetProduct()));
+        }
+        Debug.Log("Load");
+        return cargos;
     }
 
     public override event Action<AbsTileModel> UpdateView;

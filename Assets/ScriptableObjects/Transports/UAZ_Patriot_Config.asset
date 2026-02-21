@@ -15,5 +15,6 @@ MonoBehaviour:
   <Name>k__BackingField: UAZ Patriot
   <MaxSpeed>k__BackingField: 100
   <MaxCapacity>k__BackingField: 2
+  <Cost>k__BackingField: 1000
   <transportPref>k__BackingField: {fileID: 6382711455717498652, guid: b11a7555e3e706840b0af6b633837003,
     type: 3}

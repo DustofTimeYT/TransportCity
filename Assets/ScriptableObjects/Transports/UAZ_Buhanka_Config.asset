@@ -15,5 +15,6 @@ MonoBehaviour:
   <Name>k__BackingField: UAZ Buhanka
   <MaxSpeed>k__BackingField: 60
   <MaxCapacity>k__BackingField: 8
+  <Cost>k__BackingField: 15000
   <transportPref>k__BackingField: {fileID: 3999703706015466052, guid: b778555f01c389d4fa3e54ad5e703cb2,
     type: 3}
