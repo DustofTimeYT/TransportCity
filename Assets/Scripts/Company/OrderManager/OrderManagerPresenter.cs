@@ -8,13 +8,13 @@ namespace OrderManager
     {
         OrderManagerModel _model;
         IGarageManager _garageManager;
-        BankPresenter _bankPresenter;
+        IBank _bank;
 
-        public OrderManagerPresenter(IGarageManager garageManager, BankPresenter bankPresenter)
+        public OrderManagerPresenter(IGarageManager garageManager, IBank bank)
         {
             _model = new OrderManagerModel();
             _garageManager = garageManager;
-            _bankPresenter = bankPresenter;
+            _bank = bank;
         }
 
         public IGarageManager GetGarageManager()
@@ -82,7 +82,7 @@ namespace OrderManager
 
                 var contract = order.GetContract();
 
-                _bankPresenter.DepositMoney(contract.GetMoneyAmount());
+                _bank.DepositMoney(contract.GetMoneyAmount());
                 Debug.Log($"Money has been credited to your account in the amount of {contract.GetMoneyAmount()}");
                 _model.Contracts.Remove(contract);
                 order.GetTransport().ReturnToBase();

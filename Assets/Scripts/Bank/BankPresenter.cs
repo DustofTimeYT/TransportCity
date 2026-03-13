@@ -2,48 +2,51 @@
 using System;
 using UnityEngine;
 
-public class BankPresenter
+namespace Bank
 {
-    private BankModel _model;
-
-    public BankPresenter(BankConfig config)
+    public class BankPresenter : IBank
     {
-        _model = new BankModel(config);
+        private BankModel _model;
 
-        Debug.Log($"{this} was created");
-    }
-
-    public string GetMoneyAmount()
-    {
-        return $"{_model.MoneyAmount} rub";
-    }
-
-    public bool DebitMoney(int amount)
-    {
-        if (amount > 0)
+        public BankPresenter(BankConfig config)
         {
-            if(amount <= _model.MoneyAmount)
+            _model = new BankModel(config);
+
+            Debug.Log($"{this} was created");
+        }
+
+        public string GetMoneyAmount()
+        {
+            return $"{_model.MoneyAmount} rub";
+        }
+
+        public bool DebitMoney(int amount)
+        {
+            if (amount > 0)
             {
-                _model.SetMoneyAmount(_model.MoneyAmount - amount);
-                UpdateView?.Invoke();
-                return true ;
+                if (amount <= _model.MoneyAmount)
+                {
+                    _model.SetMoneyAmount(_model.MoneyAmount - amount);
+                    UpdateView?.Invoke();
+                    return true;
+                }
             }
+
+            return false;
         }
 
-        return false ;
-    }
-
-    public bool DepositMoney(int amount)
-    {
-        if (amount > 0)
+        public bool DepositMoney(int amount)
         {
-            _model.SetMoneyAmount(_model.MoneyAmount + amount);
-            UpdateView?.Invoke();
-            return true;
+            if (amount > 0)
+            {
+                _model.SetMoneyAmount(_model.MoneyAmount + amount);
+                UpdateView?.Invoke();
+                return true;
+            }
+
+            return false;
         }
 
-        return false ;
+        public event Action UpdateView;
     }
-
-    public event Action UpdateView;
 }

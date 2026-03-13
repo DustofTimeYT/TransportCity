@@ -5,6 +5,7 @@ using UnityEngine;
 using Zenject;
 using GarageManager;
 using OrderManager;
+using Bank;
 
 
 public class GameSceneInstaller : MonoInstaller
@@ -34,7 +35,7 @@ public class GameSceneInstaller : MonoInstaller
     private void BindBank()
     {
         Container.Bind<BankConfig>().FromInstance(_bankConfig).AsSingle();
-        Container.BindInterfacesAndSelfTo<BankPresenter>().FromNew().AsSingle();
+        Container.Bind<IBank>().To<BankPresenter>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<BankView>().FromInstance(_bankView).AsSingle();
     }
 

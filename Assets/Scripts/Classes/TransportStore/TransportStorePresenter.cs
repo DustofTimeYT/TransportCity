@@ -12,7 +12,7 @@ public class TransportStorePresenter : IMenuPresenter<TransportSlotPresenter>
 
     private TransportCatalog _transportCatalog;
 
-    private BankPresenter _bankPresenter;
+    private IBank _bank;
 
     private IGarageManager _garageManager;
 
@@ -20,11 +20,11 @@ public class TransportStorePresenter : IMenuPresenter<TransportSlotPresenter>
 
     private Transform _transportsContainer;
 
-    public TransportStorePresenter(TransportCatalog transportCatalog, BankPresenter bankPresenter,  IGarageManager garageManager, IPathFinder pathFinder)
+    public TransportStorePresenter(TransportCatalog transportCatalog, IBank bank,  IGarageManager garageManager, IPathFinder pathFinder)
     {
         _model = new();
         _transportCatalog = transportCatalog;
-        _bankPresenter = bankPresenter;
+        _bank = bank;
         _garageManager = garageManager;
         _pathFinder = pathFinder;
         _transportsContainer = new GameObject("Transports").GetComponent<Transform>();
@@ -83,7 +83,7 @@ public class TransportStorePresenter : IMenuPresenter<TransportSlotPresenter>
             return;
         }
 
-        if (_bankPresenter.DebitMoney(_model.SelectedTransportConfig.Cost))
+        if (_bank.DebitMoney(_model.SelectedTransportConfig.Cost))
         {
             TransportPresenter transport = new TransportPresenter(_model.SelectedTransportConfig, _pathFinder, _model.SelectedGarage);
             TransportView transportView = GameObject.Instantiate(_model.SelectedTransportConfig.transportPref, _transportsContainer).GetComponent<TransportView>();

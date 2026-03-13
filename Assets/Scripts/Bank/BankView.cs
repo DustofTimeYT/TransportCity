@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Bank;
 using TMPro;
 using UnityEngine;
 using Zenject;
