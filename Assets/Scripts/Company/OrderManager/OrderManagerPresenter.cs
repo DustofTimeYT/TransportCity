@@ -8,9 +8,9 @@ namespace OrderManager
     {
         OrderManagerModel _model;
         IGarageManager _garageManager;
-        IBank _bank;
+        IMenuPresenter _bank;
 
-        public OrderManagerPresenter(IGarageManager garageManager, IBank bank)
+        public OrderManagerPresenter(IGarageManager garageManager, IMenuPresenter bank)
         {
             _model = new OrderManagerModel();
             _garageManager = garageManager;

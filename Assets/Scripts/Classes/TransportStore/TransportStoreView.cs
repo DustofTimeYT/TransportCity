@@ -1,13 +1,5 @@
 ﻿using AbsMenu;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using Transport;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Zenject;
 
 public class TransportStoreView : AbsMenuView<TransportStorePresenter, TransportSlotPresenter, TransportSlotView>
 {

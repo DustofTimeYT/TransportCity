@@ -13,7 +13,6 @@ public class ContractLineView : MonoBehaviour, IView<ContractLinePresenter>, IPo
     [SerializeField] private TextMeshProUGUI ConsumerName;
     [SerializeField] private TextMeshProUGUI Money;
 
-
     private void UpdateView()
     {
         ContractName.text = _presenter.GetDeliveryItem().ToString();
@@ -26,6 +25,7 @@ public class ContractLineView : MonoBehaviour, IView<ContractLinePresenter>, IPo
     public void Bind(ContractLinePresenter presenter)
     {
         _presenter = presenter;
+
         UpdateView();
     }
 

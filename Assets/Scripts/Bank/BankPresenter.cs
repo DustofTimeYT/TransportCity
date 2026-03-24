@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Bank
 {
-    public class BankPresenter : IBank
+    public class BankPresenter : IMenuPresenter
     {
         private BankModel _model;
 

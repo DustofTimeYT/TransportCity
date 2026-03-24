@@ -35,7 +35,17 @@ namespace AbsMenu
             _lineViews = new List<LineView>();
             _lastLineIndex = 0;
 
+            CalculateLineAmount();
+
             Subscribe();
+        }
+
+        private void CalculateLineAmount()
+        {
+            float containerHeight = _linesContainer.gameObject.GetComponent<RectTransform>().rect.height;
+            float lineHeight = _linePref.GetComponent<RectTransform>().rect.height;
+
+            _lineAmount = Mathf.FloorToInt(containerHeight/lineHeight);
         }
 
         protected virtual void Subscribe()

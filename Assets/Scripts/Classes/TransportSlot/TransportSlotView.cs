@@ -13,10 +13,10 @@ public class TransportSlotView : MonoBehaviour, IView<TransportSlotPresenter>, I
     [SerializeField] private TextMeshProUGUI _cost;
 
 
-
     public void Bind(TransportSlotPresenter presenter)
     {
         _presenter = presenter;
+
         UpdateView();
     }
 

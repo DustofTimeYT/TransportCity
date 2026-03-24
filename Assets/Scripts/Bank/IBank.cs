@@ -1,4 +1,4 @@
-﻿public interface IBank
+﻿public interface IMenuPresenter
 {
     public bool DebitMoney(int amount);
 

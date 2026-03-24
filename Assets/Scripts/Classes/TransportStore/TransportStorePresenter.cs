@@ -12,7 +12,7 @@ public class TransportStorePresenter : IMenuPresenter<TransportSlotPresenter>
 
     private TransportCatalog _transportCatalog;
 
-    private IBank _bank;
+    private IMenuPresenter _bank;
 
     private IGarageManager _garageManager;
 
@@ -20,7 +20,7 @@ public class TransportStorePresenter : IMenuPresenter<TransportSlotPresenter>
 
     private Transform _transportsContainer;
 
-    public TransportStorePresenter(TransportCatalog transportCatalog, IBank bank,  IGarageManager garageManager, IPathFinder pathFinder)
+    public TransportStorePresenter(TransportCatalog transportCatalog, IMenuPresenter bank,  IGarageManager garageManager, IPathFinder pathFinder)
     {
         _model = new();
         _transportCatalog = transportCatalog;
