@@ -17,6 +17,8 @@ namespace PathFindAlgo
             _finder = surroundingCellsFinder;
             _grid = grid;
 
+            _finder.SetGrid(grid);
+
             _openedList = new Dictionary<Vector2Int, PathFindingTile>();
             _closedList = new Dictionary<Vector2Int, PathFindingTile>();
             Debug.Log("PathFinder was created");
@@ -30,7 +32,7 @@ namespace PathFindAlgo
 
             if (start == null || end == null) return false;
 
-            PathFindingTile currentCell = new PathFindingTile(start, 0); // €чейка вокруг которой исследуютс€ €чейки // устанавливаем стартовую €чейку текущей и обнул€ем значени€
+            PathFindingTile currentCell = _finder.FindCurrentTile(start); // €чейка вокруг которой исследуютс€ €чейки // устанавливаем стартовую €чейку текущей и обнул€ем значени€
             _openedList.Add(currentCell.coordinates, currentCell);
 
             while (_openedList.Count != 0)
@@ -70,7 +72,7 @@ namespace PathFindAlgo
 
         private void ExplorationCells(PathFindingTile currentCell, Vector2Int endCellCoordinates)
         {
-            var aroundCells = _finder.FindSurroundingTiles(currentCell.coordinates, _grid, _openedList);
+            var aroundCells = _finder.FindSurroundingTiles(currentCell.coordinates, _openedList);
 
             foreach (PathFindingTile activeCell in aroundCells)
             {

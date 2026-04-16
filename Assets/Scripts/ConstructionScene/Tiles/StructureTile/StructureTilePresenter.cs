@@ -1,23 +1,15 @@
-﻿using System;
-using StructureTile;
+﻿using StructureTile;
 using UnityEngine;
 using AbsTile;
 
-public class StructureTilePresenter : AbsTilePresenter
+public class StructureTilePresenter : AbsTilePresenter<StructureTileModel>
 {
-    readonly private StructureTileModel _model;
-
-    public StructureTilePresenter(Vector2Int coords, AbsTileConfig config, Transform parent)
+    public StructureTilePresenter(Vector2Int coords, int rotationAngle, AbsTileConfig config, Transform parent) : base(coords, rotationAngle, config, parent)
     {
         if (config.TileType != TileType.Structure) return;
-        _model = new StructureTileModel(config, coords);
-        InstantiateView(config.TilePref, parent);
-    }
 
-    public override event Action<AbsTileModel> UpdateView;
+        _model = new StructureTileModel(config, rotationAngle, coords);
 
-    public override Vector2Int GetTilePosition()
-    {
-        return _model.TileCoords;
+        InstantiateView(config.TilePref, rotationAngle, parent);
     }
 }

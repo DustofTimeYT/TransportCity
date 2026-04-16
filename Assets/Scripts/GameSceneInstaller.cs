@@ -35,7 +35,7 @@ public class GameSceneInstaller : MonoInstaller
     private void BindBank()
     {
         Container.Bind<BankConfig>().FromInstance(_bankConfig).AsSingle();
-        Container.Bind<IMenuPresenter>().To<BankPresenter>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<BankPresenter>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<BankView>().FromInstance(_bankView).AsSingle();
     }
 

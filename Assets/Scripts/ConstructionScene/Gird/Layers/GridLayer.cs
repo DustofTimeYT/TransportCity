@@ -24,9 +24,9 @@ public class GridLayer<T> where T : class
 
     private void Refresh()
     {
-        List<AbsTilePresenter> tiles = _grid.GetAllTiles().Values.ToList();
+        List<ITilePresenter> tiles = _grid.GetAllTiles().Values.ToList();
 
-        foreach (AbsTilePresenter tile in tiles)
+        foreach (ITilePresenter tile in tiles)
         {
             if (TryGetTile(tile, out T specificTile))
             {
@@ -35,7 +35,7 @@ public class GridLayer<T> where T : class
         }
     }
 
-    private bool TryGetTile(AbsTilePresenter tile, out T specificTile)
+    private bool TryGetTile(ITilePresenter tile, out T specificTile)
     {
         if (tile is T)
         {
@@ -47,7 +47,7 @@ public class GridLayer<T> where T : class
         return false;
     }
 
-    private void OnReplaceTile(AbsTilePresenter absTile)
+    private void OnReplaceTile(ITilePresenter absTile)
     {
         bool IsUpdate = false;
 

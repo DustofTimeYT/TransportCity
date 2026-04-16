@@ -13,15 +13,15 @@ public class GridGenerator
         _tilesConfig = tilesConfig;
     }
 
-    public Dictionary<Vector2Int, AbsTilePresenter> GenerateGridModel(Transform GridTransform)
+    public Dictionary<Vector2Int, ITilePresenter> GenerateGridModel(Transform GridTransform)
     {
-        Dictionary <Vector2Int, AbsTilePresenter> grid = new();
+        Dictionary <Vector2Int, ITilePresenter> grid = new();
 
         for (int x = 0; x < _gridConfig.GridSize.x; x++)
         {
             for (int y = 0; y < _gridConfig.GridSize.y; y++)
             {
-                AbsTilePresenter cellPresenter = new StructureTilePresenter(new Vector2Int(x, y), GetDefaultTile(), GridTransform);
+                ITilePresenter cellPresenter = new StructureTilePresenter(new Vector2Int(x, y), 0, GetDefaultTile(), GridTransform);
 
                 grid.Add(cellPresenter.GetTilePosition(), cellPresenter);
             }

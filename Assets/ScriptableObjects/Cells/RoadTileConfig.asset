@@ -17,3 +17,7 @@ MonoBehaviour:
     type: 3}
   <TileType>k__BackingField: 1
   <MovementDifficulty>k__BackingField: 10
+  <North>k__BackingField: 1
+  <East>k__BackingField: 1
+  <South>k__BackingField: 1
+  <West>k__BackingField: 1

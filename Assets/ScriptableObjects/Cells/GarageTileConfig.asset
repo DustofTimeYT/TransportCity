@@ -16,5 +16,9 @@ MonoBehaviour:
   <TilePref>k__BackingField: {fileID: 4797458041556597482, guid: c9acb0c026348fa42b94a42f77e95b46,
     type: 3}
   <TileType>k__BackingField: 2
-  <AmountParkingSlots>k__BackingField: 2
   <MovementDifficulty>k__BackingField: 1
+  <North>k__BackingField: 1
+  <East>k__BackingField: 1
+  <South>k__BackingField: 1
+  <West>k__BackingField: 1
+  <AmountParkingSlots>k__BackingField: 2

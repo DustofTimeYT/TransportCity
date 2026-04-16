@@ -27,11 +27,11 @@ namespace Grid
 
         public void ChangeVisibility(Vector2Int coords, bool isVisible)
         {
-            TryGetTile(coords, out AbsTilePresenter tile);
+            TryGetTile(coords, out ITilePresenter tile);
             tile.ChangeVisibility(isVisible);
         }
 
-        public bool TryReplaceTile(Vector2Int coords, AbsTileConfig tileConfig, out AbsTilePresenter tile)
+        public bool TryReplaceTile(Vector2Int coords, int rotationAngle, AbsTileConfig tileConfig, out ITilePresenter tile)
         {
             if (!TryGetTile(coords, out tile))
             {
@@ -41,23 +41,23 @@ namespace Grid
 
             if (tile != null)
             {
-                AbsTilePresenter newTile;
+                ITilePresenter newTile;
                 switch (tileConfig.TileType)
                 {
                     case TileType.Road:
-                        newTile = new RoadTilePresenter(tile.GetTilePosition(), tileConfig, _gridGO);
+                        newTile = new RoadTilePresenter(tile.GetTilePosition(), rotationAngle, tileConfig, _gridGO);
                         break;
 
                     case TileType.Structure:
-                        newTile = new StructureTilePresenter(tile.GetTilePosition(), tileConfig, _gridGO);
+                        newTile = new StructureTilePresenter(tile.GetTilePosition(), rotationAngle, tileConfig, _gridGO);
                         break;
 
                     case TileType.Prosumer:
-                        newTile = new ProsumerTilePresenter(tile.GetTilePosition(), tileConfig, _gridGO);
+                        newTile = new ProsumerTilePresenter(tile.GetTilePosition(), rotationAngle, tileConfig, _gridGO);
                         break;
 
                     case TileType.Garage:
-                        newTile = new GarageTilePresenter(tile.GetTilePosition(), tileConfig, _gridGO);
+                        newTile = new GarageTilePresenter(tile.GetTilePosition(), rotationAngle, tileConfig, _gridGO);
                         break;
 
                     default:
@@ -83,21 +83,21 @@ namespace Grid
 
         public bool CheckAvaibleCoords(Vector2Int coords)
         {
-            return TryGetTile(coords, out AbsTilePresenter tile);
+            return TryGetTile(coords, out ITilePresenter tile);
         }
 
-        public Dictionary<Vector2Int, AbsTilePresenter> GetAllTiles()
+        public Dictionary<Vector2Int, ITilePresenter> GetAllTiles()
         {
            return _model.Tiles;
         }
 
-        public bool TryGetTiles(IReadOnlyList<Vector2Int> tilesPos, out List<AbsTilePresenter> tiles)
+        public bool TryGetTiles(IReadOnlyList<Vector2Int> tilesPos, out List<ITilePresenter> tiles)
         {
             tiles = new();
 
             foreach (Vector2Int tilePos in tilesPos)
             {
-                if (!TryGetTile(tilePos, out AbsTilePresenter tile)) return false;
+                if (!TryGetTile(tilePos, out ITilePresenter tile)) return false;
                 tiles.Add(tile);
             }
 
@@ -117,7 +117,7 @@ namespace Grid
             return true;
         }
 
-        private bool TryGetTile(Vector2Int cellPos, out AbsTilePresenter cell)
+        private bool TryGetTile(Vector2Int cellPos, out ITilePresenter cell)
         {
             cell = null;
             if (_model.Tiles.TryGetValue(cellPos, out var _structure))
@@ -157,7 +157,7 @@ namespace Grid
             return false;
         }
 
-        public event Action<AbsTilePresenter> ReplaceTile;
+        public event Action<ITilePresenter> ReplaceTile;
 
     }
 }

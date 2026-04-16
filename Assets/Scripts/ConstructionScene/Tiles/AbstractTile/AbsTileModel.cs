@@ -18,9 +18,12 @@ namespace AbsTile
 
         public Vector2Int TileCoords { get; private set; }
 
-        protected AbsTileModel(Vector2Int coords, AbsTileConfig config)
+        public int Rotation { get; private set; }
+
+        protected AbsTileModel(Vector2Int coords, int rotationAngle, AbsTileConfig config)
         {
             TileCoords = coords;
+            Rotation = rotationAngle;
             SetValidName(config);
         }
 
@@ -54,7 +57,5 @@ namespace AbsTile
                 _tileNames.Add(config.Name, 1);
             }
         }
-
-        public abstract void SetDefault();
     }
 }

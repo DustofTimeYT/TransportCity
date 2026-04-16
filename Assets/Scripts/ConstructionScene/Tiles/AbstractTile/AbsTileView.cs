@@ -8,37 +8,28 @@ namespace AbsTile
 {
     public abstract class AbsTileView : MonoBehaviour
     {
-        protected AbsTilePresenter _presenter;
+        protected ITilePresenter _presenter;
 
-        public void Bind(AbsTilePresenter presenter, Vector2Int tileCoords)
+        public void Bind(ITilePresenter presenter)
         {
             _presenter = presenter;
-            gameObject.transform.position = new Vector3(tileCoords.x, 0, tileCoords.y);
-
-            Subscribe();
-        }
-
-        public void Bind(AbsTilePresenter presenter)
-        {
-            var cellCoords = presenter.GetTilePosition();
-            _presenter = presenter;
-            gameObject.transform.position = new Vector3(cellCoords.x, 0, cellCoords.y);
-            this.name = $"{this.name} {cellCoords}";
+            gameObject.transform.position = _presenter.GetTile3DPosition();
+            this.name = $"{_presenter.GetName()} {_presenter.GetTilePosition()}";
             Subscribe();
         }
 
         protected void Subscribe()
         {
-            _presenter.UpdateView += OnUpdateView;
-            _presenter.DeleteView += OnDeleteView;
-            _presenter.ChangeVisibilityView += OnChangeVisibilityView;
+            _presenter.EventUpdateView += OnUpdateView;
+            _presenter.EventDeleteView += OnDeleteView;
+            _presenter.EventChangeVisibilityView += OnChangeVisibilityView;
         }
 
         protected void Unsubscribe()
         {
-            _presenter.UpdateView -= OnUpdateView;
-            _presenter.DeleteView -= OnDeleteView;
-            _presenter.ChangeVisibilityView -= OnChangeVisibilityView;
+            _presenter.EventUpdateView -= OnUpdateView;
+            _presenter.EventDeleteView -= OnDeleteView;
+            _presenter.EventChangeVisibilityView -= OnChangeVisibilityView;
         }
 
         /// <summary>

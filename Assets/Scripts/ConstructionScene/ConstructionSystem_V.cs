@@ -4,6 +4,8 @@ using Zenject;
 
 public class ConstructionSystem_V : MonoBehaviour
 {
+    private const int _rotationAngle = 90;
+
     [Inject]
     private ConstructionSystem_P _cS_P;
     [Inject]
@@ -28,6 +30,12 @@ public class ConstructionSystem_V : MonoBehaviour
 
     private void Update()
     {
+        PlacecingTile();
+        
+    }
+
+    private void PlacecingTile()
+    {
         Cancel();
 
         if (_flyingTile != null)
@@ -49,6 +57,7 @@ public class ConstructionSystem_V : MonoBehaviour
                     _cS_P.HideTile(newPos);
                 }
 
+                RotateTile();
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -61,7 +70,7 @@ public class ConstructionSystem_V : MonoBehaviour
 
     private void Cancel()
     {
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (_flyingTile != null)
             {
@@ -73,6 +82,18 @@ public class ConstructionSystem_V : MonoBehaviour
         }
     }
 
+    private void RotateTile()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)) SetRotation(_rotationAngle);
+
+        if (Input.GetKeyDown(KeyCode.E)) SetRotation(-_rotationAngle);
+    }
+
+    private void SetRotation(int rotationAngle)
+    {
+        _flyingTile.transform.Rotate(0, rotationAngle, 0);
+    }
+
     private void CreateUIMenu()
     {
         ItemSlotConstruction CCI;
@@ -80,7 +101,6 @@ public class ConstructionSystem_V : MonoBehaviour
         {
             GameObject slot = Instantiate(_buttonPrefab);
             slot.transform.SetParent(_container);
-            //Instantiate(item.TilePref, slot.transform);
             CCI = slot.GetComponent<ItemSlotConstruction>();
             CCI.Init(this,item);
         }
@@ -100,6 +120,6 @@ public class ConstructionSystem_V : MonoBehaviour
 
     private void PlaceFlyingTile(int placeX, int placeY)
     {
-        _cS_P.TryPlaceTile(new Vector2Int(placeX, placeY), _currentTileConfig);
+        _cS_P.TryPlaceTile(new Vector2Int(placeX, placeY), (int)_flyingTile.transform.rotation.eulerAngles.y, _currentTileConfig);
     }
 }

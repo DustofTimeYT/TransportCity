@@ -1,34 +1,62 @@
 using System;
-using AbsTile;
 using UnityEngine;
 
 /// <summary>
 /// Класс, предоставляющий возможность взаимодействовать с данными
 /// </summary>
 
-public abstract class AbsTilePresenter
+namespace AbsTile
 {
-    public abstract Vector2Int GetTilePosition();
-
-    protected void InstantiateView(GameObject CellPref, Transform parent)
+    public abstract class AbsTilePresenter<TileModel> : ITilePresenter where TileModel : AbsTileModel
     {
-        var view = GameObject.Instantiate(CellPref, parent).GetComponent<AbsTileView>();
-        view.Bind(this);
+        protected TileModel _model;
+
+        public AbsTilePresenter(Vector2Int coords, int rotationAngle, AbsTileConfig config, Transform parent)
+        {
+        }
+
+        public Vector2Int GetTilePosition()
+        {
+            return _model.TileCoords;
+        }
+
+        public Vector3 GetTile3DPosition()
+        {
+            return new Vector3(_model.TileCoords.x, 0, _model.TileCoords.y);
+        }
+
+        public string GetName()
+        {
+            return _model.Name;
+        }
+
+        protected void InstantiateView(GameObject CellPref, int rotationAngle, Transform parent)
+        {
+            GameObject go = GameObject.Instantiate(CellPref, parent);
+            go.transform.Rotate(0, rotationAngle, 0);
+            var view = go.GetComponent<AbsTileView>();
+            view.Bind(this);
+        }
+
+        public void ChangeVisibility(bool isVisible)
+        {
+            EventChangeVisibilityView?.Invoke(isVisible);
+        }
+
+        public void Delete()
+        {
+            EventDeleteView?.Invoke();
+        }
+
+        public void UpdateView(AbsTileModel model)
+        {
+            EventUpdateView?.Invoke(_model);
+        }
+
+        public event Action<AbsTileModel> EventUpdateView;
+
+        public event Action EventDeleteView;
+
+        public event Action<bool> EventChangeVisibilityView;
     }
-
-    public void ChangeVisibility(bool isVisible)
-    {
-        ChangeVisibilityView?.Invoke(isVisible);
-    }
-
-    public void Delete()
-    {
-        DeleteView?.Invoke();
-    }
-
-    public abstract event Action<AbsTileModel> UpdateView;
-
-    public event Action DeleteView;
-
-    public event Action<bool> ChangeVisibilityView;
 }

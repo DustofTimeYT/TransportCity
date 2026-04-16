@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using AbsTile;
 
 namespace StructureTile
@@ -8,13 +7,9 @@ namespace StructureTile
     {
         private StructureTileConfig _config;
 
-        public StructureTileModel(AbsTileConfig config, Vector2Int coords) : base(coords, config)
+        public StructureTileModel(AbsTileConfig config, int rotationAngle, Vector2Int coords) : base(coords, rotationAngle, config)
         {
             _config = ValidateConfigType<StructureTileConfig>(config);
-        }
-
-        public override void SetDefault()
-        {
         }
     }
 }

@@ -1,6 +1,10 @@
 ﻿
+using System.Collections.Generic;
+using Unity.VisualScripting;
+
 public interface IMovable
 {
-    public void SetMovementDifficulty(int value);
     public int GetMovementDifficulty();
+
+    public Dictionary<TileDirections, bool> GetAvaibleDirections();
 }

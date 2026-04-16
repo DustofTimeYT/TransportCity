@@ -7,7 +7,13 @@ using UnityEngine;
 
 public class TransportView : MonoBehaviour
 {
+    private const int _rotationAngle = 45;
+    private const float _waitRouteTime = 0.5f;
+    private const float _waitLoadTime = 3f;
+
     private TransportPresenter _presenter;
+
+    private Coroutine _routeCoroutine;
 
     public void Bind(TransportPresenter presenter)
     {
@@ -26,24 +32,24 @@ public class TransportView : MonoBehaviour
     private void OnStartReturnToBase()
     {
         Show();
-        StartCoroutine(StartRoute(_presenter.FindPathToBase()));
+        _routeCoroutine = StartCoroutine(StartRoute(_presenter.FindPathToBase()));
     }
 
     private void OnStartRoute()
     {
         Show();
-        StartCoroutine(NextEndpoint());
+        _routeCoroutine = StartCoroutine(NextEndpoint());
     }
 
     public IEnumerator NextEndpoint()
     {
         yield return StartCoroutine(StartRoute(_presenter.FindPathToLoad()));
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(_waitLoadTime);
         _presenter.LoadCargo();
         yield return StartCoroutine(StartRoute(_presenter.FindPathToUnload()));
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(_waitLoadTime);
         _presenter.UnloadCargo();
 
         yield break;
@@ -51,21 +57,140 @@ public class TransportView : MonoBehaviour
 
     public IEnumerator StartRoute(IReadOnlyList<Vector2Int> path)
     {
-        Vector2Int currentPos = _presenter.GetPosition();
+        Vector2Int prevPos = _presenter.GetPosition();
 
-        foreach (Vector2Int tilePos in path)
+        if (path == null)
         {
-            SetPosition(tilePos);
-            yield return new WaitForSeconds(1);
+            Debug.Log("Нет пути для движения. Маршрут остановлен");
+            StopCoroutine(_routeCoroutine);
+            yield break;
+        }
+
+        gameObject.transform.LookAt(new Vector3(path[0].x, 0, path[0].y));
+
+        foreach (Vector2Int nextPos in path)
+        {
+            Vector2Int curPos = _presenter.GetPosition();
+
+            Debug.Log($"prevPos {prevPos} : curPos {curPos} : nextPos {nextPos}");
+
+
+            if ((prevPos.x == curPos.x && curPos.x == nextPos.x) || (prevPos.y == curPos.y && curPos.y == nextPos.y))
+            {
+                gameObject.transform.LookAt(new Vector3(nextPos.x, 0, nextPos.y));
+                yield return new WaitForSeconds(_waitRouteTime);
+                //gameObject.transform.
+            }
+            else
+            {
+                if (curPos.x - prevPos.x > 0 && curPos.y == prevPos.y)
+                {
+                    if (nextPos.y - curPos.y > 0)
+                    {
+                        SetRotation(-_rotationAngle);
+                        yield return new WaitForSeconds(_waitRouteTime);
+                        SetRotation(-_rotationAngle);
+                    }
+                    else if (nextPos.y - curPos.y < 0)
+                    {
+                        SetRotation(_rotationAngle);
+                        yield return new WaitForSeconds(_waitRouteTime);
+                        SetRotation(_rotationAngle);
+                    }
+                }
+
+                if (curPos.x - prevPos.x < 0 && curPos.y == prevPos.y)
+                {
+                    if (nextPos.y - curPos.y > 0)
+                    {
+                        SetRotation(_rotationAngle);
+                        yield return new WaitForSeconds(_waitRouteTime);
+                        SetRotation(_rotationAngle);
+                    }
+                    else if (nextPos.y - curPos.y < 0)
+                    {
+                        SetRotation(-_rotationAngle);
+                        yield return new WaitForSeconds(_waitRouteTime);
+                        SetRotation(-_rotationAngle);
+                    }
+                }
+
+
+                if (curPos.y - prevPos.y > 0 && curPos.x == prevPos.x)
+                {
+                    if (nextPos.x - curPos.x > 0)
+                    {
+                        SetRotation(_rotationAngle);
+                        yield return new WaitForSeconds(_waitRouteTime);
+                        SetRotation(_rotationAngle);
+                    }
+                    else if (nextPos.x - curPos.x < 0)
+                    {
+                        SetRotation(-_rotationAngle);
+                        yield return new WaitForSeconds(_waitRouteTime);
+                        SetRotation(-_rotationAngle);
+                    }
+                }
+
+                if (curPos.y - prevPos.y < 0 && curPos.x == prevPos.x)
+                {
+                    if (nextPos.x - curPos.x > 0)
+                    {
+                        SetRotation(-_rotationAngle);
+                        yield return new WaitForSeconds(_waitRouteTime);
+                        SetRotation(-_rotationAngle);
+                    }
+                    else if (nextPos.x - curPos.x < 0)
+                    {
+                        SetRotation(_rotationAngle);
+                        yield return new WaitForSeconds(_waitRouteTime);
+                        SetRotation(_rotationAngle);
+                    }
+                }
+                /*
+                if (nextPos.x - curPos.x < 0 || nextPos.y - curPos.y > 0)
+                {
+                    SetRotation(-_rotationAngle);
+                    yield return new WaitForSeconds(_waitRouteTime);
+                    SetRotation(-_rotationAngle);
+                }
+                else if (nextPos.x - curPos.x > 0 || nextPos.y - curPos.y < 0)
+                {
+                    SetRotation(_rotationAngle);
+                    yield return new WaitForSeconds(_waitRouteTime);
+                    SetRotation(_rotationAngle);
+                }
+                */
+            }
+
+            SetPosition(nextPos);
+            //LookAtTile(nextPos, prevPos);
+            //SetPosition(nextPos);
+            //yield return new WaitForSeconds(_waitTime);
+            prevPos = curPos;
         }
         yield break;
     }
 
-    private Vector2Int GetPosition()
+    private void LookAtTile(Vector2Int nextPos, Vector2Int prevPos)
     {
-        var pos = transform.position;
-        return new((int) pos.x, (int)pos.z);
+        Vector2Int curPos = _presenter.GetPosition();
+        if ((prevPos.x == curPos.x && curPos.x == nextPos.x) || (prevPos.y == curPos.y && curPos.y == nextPos.y))
+        {
+            gameObject.transform.LookAt(new Vector3(nextPos.x, 0, nextPos.y));
+        }
+        else
+        {
+            SetRotation(_rotationAngle);
+        }
+
     }
+
+    private void SetRotation(int rotationAngle)
+    {
+        gameObject.transform.Rotate(0, rotationAngle, 0);
+    }
+
     private void SetPosition(Vector2Int pos)
     {
         transform.position = new(pos.x, 0, pos.y);

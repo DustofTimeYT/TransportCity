@@ -1,44 +1,22 @@
-﻿using AbsTile;
+﻿using AbsMoveTile;
 using GarageTile;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GarageTilePresenter : AbsTilePresenter, IMovable, IGarage
+public class GarageTilePresenter : AbsMoveTilePresenter<GarageTileModel>, IGarage
 {
-    GarageTileModel _model;
-
-    public GarageTilePresenter(Vector2Int coords, AbsTileConfig config, Transform parent)
+    public GarageTilePresenter(Vector2Int coords, int rotationAngle, AbsTileConfig config, Transform parent) : base(coords, rotationAngle, config, parent)
     {
         if (config.TileType != TileType.Garage) return;
-        _model = new GarageTileModel(config, coords);
-        InstantiateView(config.TilePref, parent);
-    }
 
-    public override Vector2Int GetTilePosition()
-    {
-        return _model.TileCoords;
-    }
+        _model = new GarageTileModel(config, rotationAngle, coords);
 
-    public int GetMovementDifficulty()
-    {
-        return _model.MovementDifficulty;
-    }
-
-    public void SetMovementDifficulty(int value)
-    {
-        _model.TrySetMovementDifficulty(value);
-        UpdateView?.Invoke(_model);
+        InstantiateView(config.TilePref, rotationAngle, parent);
     }
 
     public List<ITransport> GetTransports()
     {
         return _model.Transports;
-    }
-
-    public string GetName()
-    {
-        return _model.Name;
     }
 
     public void AddTransport(ITransport transport)
@@ -59,7 +37,4 @@ public class GarageTilePresenter : AbsTilePresenter, IMovable, IGarage
         }
         return false;
     }
-
-
-    public override event Action<AbsTileModel> UpdateView;
 }

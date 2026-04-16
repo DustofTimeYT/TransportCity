@@ -1,10 +1,10 @@
-﻿using AbsTile;
+﻿using AbsMoveTile;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ProsumerTile
 {
-    public class ProsumerTileModel : AbsTileModel
+    public class ProsumerTileModel : AbsMoveTileModel
     {
         private ProsumerTileConfig _config;
 
@@ -12,27 +12,16 @@ namespace ProsumerTile
 
         public List<ProductType> ConsumerProduct { get; private set; }
 
-        public int MovementDifficulty { get; private set; }
-
-
-        public ProsumerTileModel(AbsTileConfig TileConfig, Vector2Int coords) : base(coords, TileConfig)
+        public ProsumerTileModel(AbsTileConfig TileConfig, int rotationAngle, Vector2Int coords) : base(coords, rotationAngle, TileConfig)
         {
             _config = ValidateConfigType<ProsumerTileConfig>(TileConfig);
             SetDefault();
         }
 
-        public void TrySetMovementDifficulty(int value)
-        {
-            if (value < 1)
-                return;
-            MovementDifficulty = value;
-        }
-
-        public override void SetDefault()
+        private void SetDefault()
         {
             ProducerProduct = _config.ProducerProduct;
             ConsumerProduct = _config.ConsumerProduct;
-            TrySetMovementDifficulty(_config.MovementDifficulty);
         }
     }
 }

@@ -5,8 +5,6 @@ using UnityEngine;
 /// </summary>
 
 [CreateAssetMenu(fileName = "RoadTileConfig", menuName = "ScriptableObjects/RoadTileConfig", order = 1)]
-public class RoadTileConfig : AbsTileConfig
+public class RoadTileConfig : AbsMoveTileConfig
 {
-    [field: SerializeField]
-    public int MovementDifficulty { get; private set; }
 }

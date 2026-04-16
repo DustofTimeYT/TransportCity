@@ -1,37 +1,18 @@
-using System;
-using AbsTile;
+using AbsMoveTile;
 using UnityEngine;
 
 /// <summary>
 /// Класс, предоставляющий возможность взаимодействовать с данными
 /// </summary>
 
-public class RoadTilePresenter : AbsTilePresenter, IMovable
+public class RoadTilePresenter : AbsMoveTilePresenter<RoadTileModel>
 {
-    readonly private RoadTileModel _model;
-
-    public RoadTilePresenter(Vector2Int coords, AbsTileConfig config, Transform parent)
+    public RoadTilePresenter(Vector2Int coords, int rotationAngle, AbsTileConfig config, Transform parent) : base(coords, rotationAngle, config, parent)
     {
         if (config.TileType != TileType.Road) return;
-        _model = new RoadTileModel(config, coords);
-        InstantiateView(config.TilePref, parent);
-    }
 
-    public int GetMovementDifficulty()
-    {
-        return _model.MovementDifficulty;
-    }
+        _model = new RoadTileModel(config as AbsMoveTileConfig, rotationAngle, coords);
 
-    public void SetMovementDifficulty(int value)
-    {
-        _model.TrySetMovementDifficulty(value);
-        UpdateView?.Invoke(_model);
+        InstantiateView(config.TilePref, rotationAngle, parent);
     }
-
-    public override Vector2Int GetTilePosition()
-    {
-        return _model.TileCoords;
-    }
-
-    public override event Action<AbsTileModel> UpdateView;
 }

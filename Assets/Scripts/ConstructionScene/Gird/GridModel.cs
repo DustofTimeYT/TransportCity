@@ -7,14 +7,14 @@ namespace Gird
     public class GridModel
     {
 
-        public Dictionary<Vector2Int, AbsTilePresenter> Tiles { get; private set; }
+        public Dictionary<Vector2Int, ITilePresenter> Tiles { get; private set; }
 
-        public GridModel(Dictionary<Vector2Int, AbsTilePresenter> grid)
+        public GridModel(Dictionary<Vector2Int, ITilePresenter> grid)
         {
             Tiles = grid;
         }
 
-        public bool TryReplaceTile(AbsTilePresenter tile)
+        public bool TryReplaceTile(ITilePresenter tile)
         {
             var coords = tile.GetTilePosition();
             if (Tiles.ContainsKey(coords))
@@ -24,15 +24,5 @@ namespace Gird
             }
             return false;
         }
-
-        /*public bool TryReplaceCell(RoadCellPresenter cell)
-        {
-            if (!Roads.Contains(cell.GetCellPosition()))
-            {
-                Roads.Add(cell.GetCellPosition());
-                return true;
-            }
-            return false;
-        }*/
     }
 }

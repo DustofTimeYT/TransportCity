@@ -1,11 +1,29 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 namespace PathFindAlgo
 {
     public class SurroundingTilesFinder : ISurroundingTilesFinder
     {
+        private IMoveGrid _grid;
+        public void SetGrid(IMoveGrid grid)
+        {
+            _grid = grid;
+        }
+
+        public PathFindingTile FindCurrentTile(Vector2Int currentTileCoordinates)
+        {
+            if (_grid.TryGetTile(new Vector2Int(currentTileCoordinates.x, currentTileCoordinates.y), out IMovable tileData))
+            {
+                return new PathFindingTile(currentTileCoordinates, tileData.GetMovementDifficulty(), tileData.GetAvaibleDirections());
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// ћетод поиска €чеек вокруг текущей €чейки
         /// </summary>
@@ -14,32 +32,70 @@ namespace PathFindAlgo
         /// <param name="openedList">—писок €чеек, которые были обнаружены на прошлом этапе исследовани€<param>
         /// <returns>—писок клеток наход€щихс€ вокруг переданной клетки в форме +</returns>
 
-        public IReadOnlyList<PathFindingTile> FindSurroundingTiles(Vector2Int currentTileCoordinates, IMoveGrid grid, Dictionary<Vector2Int, PathFindingTile> openedList)
+        public IReadOnlyList<PathFindingTile> FindSurroundingTiles(Vector2Int currentTileCoordinates, Dictionary<Vector2Int, PathFindingTile> openedList)
         {
             List<PathFindingTile> surroundingTiles = new List<PathFindingTile>();
-            Vector2Int tile;
-            for (int i = -1; i <= 1; i += 2)
+            Vector2Int tileCoords;
+            openedList.TryGetValue(currentTileCoordinates, out PathFindingTile currentPFTile);
+            for (int Xi = -1; Xi <= 1; Xi += 2)
             {
-                tile = new(currentTileCoordinates.x + i, currentTileCoordinates.y);
-                CheckTile(tile, surroundingTiles, grid, openedList);
+                tileCoords = new(currentTileCoordinates.x + Xi, currentTileCoordinates.y);
+                if (FindTile(tileCoords, currentPFTile, _grid, openedList, out var PFTile))
+                    surroundingTiles.Add(PFTile);
+            }
 
-                tile = new(currentTileCoordinates.x, currentTileCoordinates.y + i);
-                CheckTile(tile, surroundingTiles, grid, openedList);
+            for (int Yi = -1; Yi <= 1; Yi += 2)
+            {
+                tileCoords = new(currentTileCoordinates.x, currentTileCoordinates.y + Yi);
+                if (FindTile(tileCoords, currentPFTile, _grid, openedList, out var PFTile))
+                    surroundingTiles.Add(PFTile);
             }
             return surroundingTiles;
         }
 
-        private void CheckTile(Vector2Int tile, List<PathFindingTile> surroundingTiles, IMoveGrid grid, Dictionary<Vector2Int, PathFindingTile> openedList)
+
+        private bool FindTile(Vector2Int tileCoords, PathFindingTile currentPFTile, IMoveGrid grid, Dictionary<Vector2Int, PathFindingTile> openedList, out PathFindingTile findingTile)
         {
-            if (openedList.TryGetValue(new Vector2Int(tile.x, tile.y), out PathFindingTile PFTile))
+            if (openedList.TryGetValue(new Vector2Int(tileCoords.x, tileCoords.y), out findingTile))
             {
-                surroundingTiles.Add(PFTile);
+            }
+            else if (grid.TryGetTile(new Vector2Int(tileCoords.x, tileCoords.y), out IMovable tileData))
+            {
+                findingTile = new PathFindingTile(tileCoords, tileData.GetMovementDifficulty(), tileData.GetAvaibleDirections());
             }
 
-            if (grid.TryGetTile(new Vector2Int(tile.x, tile.y), out IMovable tileData))
+
+            if (findingTile != null)
             {
-                surroundingTiles.Add(new PathFindingTile(tile, tileData.GetMovementDifficulty()));
+                var currentDirections = currentPFTile.PathDirections;
+                if (currentPFTile.coordinates.x - findingTile.coordinates.x == 0)
+                {
+                    if (currentDirections[TileDirections.North] && findingTile.PathDirections[TileDirections.South])
+                    {
+                        return true;
+                    }
+                    else if (currentDirections[TileDirections.South] && findingTile.PathDirections[TileDirections.North])
+                    {
+                        return true;
+                    }
+                }
+                else if (currentPFTile.coordinates.y - findingTile.coordinates.y == 0)
+                {
+                   
+                    if (currentDirections[TileDirections.East] && findingTile.PathDirections[TileDirections.West])
+                    {
+                        return true;
+                    }
+                    else if (currentDirections[TileDirections.West] && findingTile.PathDirections[TileDirections.East])
+                    {
+                        return true;
+                    }
+                }
             }
+
+            findingTile = null;
+            return false;
+
         }
     }
 }

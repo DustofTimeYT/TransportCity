@@ -1,30 +1,21 @@
-using AbsTile;
+using AbsMoveTile;
 using UnityEngine;
 
 /// <summary>
 /// Класс, хранящий информацио о клетке во время сессии
 /// </summary>
 
-public class RoadTileModel : AbsTileModel
+public class RoadTileModel : AbsMoveTileModel
 {
     private RoadTileConfig _config;
 
-    public int MovementDifficulty { get; private set; }
-
-    public RoadTileModel(AbsTileConfig config, Vector2Int coords) : base(coords, config)
+    public RoadTileModel(AbsMoveTileConfig config, int rotationAngle, Vector2Int coords) : base(coords, rotationAngle, config)
     {
         _config = ValidateConfigType<RoadTileConfig>(config);
         SetDefault();
     }
 
-    public void  TrySetMovementDifficulty(int value)
-    {
-        if (value < 1)
-            return;
-        MovementDifficulty = value;
-    }
-
-    public override void SetDefault()
+    private void SetDefault()
     {
         MovementDifficulty = _config.MovementDifficulty;
     }

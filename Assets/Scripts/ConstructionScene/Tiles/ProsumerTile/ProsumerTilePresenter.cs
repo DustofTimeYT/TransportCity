@@ -1,27 +1,17 @@
-﻿using AbsTile;
+﻿using AbsMoveTile;
 using ProsumerTile;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProsumerTilePresenter : AbsTilePresenter, IConsumer, IProducer, IMovable
+public class ProsumerTilePresenter : AbsMoveTilePresenter<ProsumerTileModel>, IConsumer, IProducer
 {
-    readonly private ProsumerTileModel _model;
-    public ProsumerTilePresenter(Vector2Int coords, AbsTileConfig config, Transform parent)
+    public ProsumerTilePresenter(Vector2Int coords, int rotationAngle, AbsTileConfig config, Transform parent) : base(coords, rotationAngle, config, parent)
     {
         if (config.TileType != TileType.Prosumer) return;
-        _model = new ProsumerTileModel(config, coords);
-        InstantiateView(config.TilePref, parent);
-    }
 
-    public override Vector2Int GetTilePosition()
-    {
-        return _model.TileCoords;
-    }
+        _model = new ProsumerTileModel(config, rotationAngle, coords);
 
-    public string GetName()
-    {
-        return _model.Name;
+        InstantiateView(config.TilePref, rotationAngle, parent);
     }
 
     public List<ProductType> GetConsumerMaterials()
@@ -37,16 +27,6 @@ public class ProsumerTilePresenter : AbsTilePresenter, IConsumer, IProducer, IMo
     public List<ProductType> GetProducerMaterials()
     {
         return _model.ProducerProduct;
-    }
-
-    public void SetMovementDifficulty(int value)
-    {
-        _model.TrySetMovementDifficulty(value);
-    }
-
-    public int GetMovementDifficulty()
-    {
-        return _model.MovementDifficulty;
     }
 
     public void HandOverCargo(List<ICargoItem> cargo, RoutePresenter route)
@@ -66,6 +46,4 @@ public class ProsumerTilePresenter : AbsTilePresenter, IConsumer, IProducer, IMo
         Debug.Log("Load");
         return cargos;
     }
-
-    public override event Action<AbsTileModel> UpdateView;
 }

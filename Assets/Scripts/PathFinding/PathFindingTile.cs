@@ -1,17 +1,21 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PathFindAlgo
 {
     public class PathFindingTile
     {
-        public PathFindingTile(Vector2Int coordinates, int movementDifficulty)
+        public PathFindingTile(Vector2Int coordinates, int movementDifficulty, Dictionary<TileDirections, bool> pathDirections)
         {
             this.coordinates = coordinates;
             this.movementDifficulty = movementDifficulty;
+            PathDirections = pathDirections;
             pathLength = 0;
         }
         public int movementDifficulty { get; private set; }
+
+        public Dictionary<TileDirections, bool> PathDirections { get; private set; }
 
         public Vector2Int coordinates { get; private set; }
 

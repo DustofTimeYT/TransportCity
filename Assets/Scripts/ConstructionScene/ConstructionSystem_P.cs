@@ -35,9 +35,9 @@ public class ConstructionSystem_P
         }
     }
 
-    public bool TryPlaceTile(Vector2Int coords, AbsTileConfig tileConfig)
+    public bool TryPlaceTile(Vector2Int coords, int rotationAngle, AbsTileConfig tileConfig)
     {
-        if (_grid.TryReplaceTile(coords, tileConfig, out AbsTilePresenter tile)) return true;
+        if (_grid.TryReplaceTile(coords, rotationAngle, tileConfig, out ITilePresenter tile)) return true;
         return false;
     }
 }
