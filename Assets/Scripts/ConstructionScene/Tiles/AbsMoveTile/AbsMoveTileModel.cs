@@ -9,18 +9,20 @@ namespace AbsMoveTile
     {
         public int MovementDifficulty { get; protected set; }
 
-        public Dictionary<TileDirections, bool> AvaibleDirections { get; protected set; }
+        public Dictionary<TileDirections, bool> IncomingDirections { get; protected set; }
+
+        public Dictionary<TileDirections, bool> OutgoingDirections { get; protected set; }
 
         public AbsMoveTileModel(Vector2Int coords, int rotationAngle, AbsTileConfig config) : base(coords, rotationAngle, config)
         {
-            AvaibleDirections = new();
             SetDefault(coords, rotationAngle, config as AbsMoveTileConfig);
         }
 
         private void SetDefault(Vector2Int coords, int rotationAngle, AbsMoveTileConfig config)
         {
             TrySetMovementDifficulty(config.MovementDifficulty);
-            SetAvaibleDirections(rotationAngle, config);
+            IncomingDirections = SetDirections(rotationAngle, config.GetIncomingDirections());
+            OutgoingDirections = SetDirections(rotationAngle, config.GetOutgoingDirections());
         }
 
         public bool TrySetMovementDifficulty(int value)
@@ -32,14 +34,14 @@ namespace AbsMoveTile
             return true;
         }
 
-        protected void SetAvaibleDirections(int rotationAngle, AbsMoveTileConfig config)
+        protected Dictionary<TileDirections, bool> SetDirections(int rotationAngle, Dictionary<TileDirections, bool> defaultDirections)
         {
             Queue<bool> directions = new();
 
-            directions.Enqueue(config.North);
-            directions.Enqueue(config.East);
-            directions.Enqueue(config.South);
-            directions.Enqueue(config.West);
+            directions.Enqueue(defaultDirections[TileDirections.North]);
+            directions.Enqueue(defaultDirections[TileDirections.East]);
+            directions.Enqueue(defaultDirections[TileDirections.South]);
+            directions.Enqueue(defaultDirections[TileDirections.West]);
 
             for (int angle = 0; angle != rotationAngle / 90; ++angle)
             {
@@ -48,16 +50,18 @@ namespace AbsMoveTile
             }
 
             var arr = directions.ToArray();
-            Debug.Log($"config North = {config.North}, East = {config.East}, South = {config.South}, West = {config.West} ");
-            Debug.Log($"queue North = {arr[0]}, East = {arr[1]}, South = {arr[2]}, West = {arr[3]} ");
+            //Debug.Log($"config North = {config.North}, East = {config.East}, South = {config.South}, West = {config.West} ");
+            //Debug.Log($"queue North = {arr[0]}, East = {arr[1]}, South = {arr[2]}, West = {arr[3]} ");
 
+            Dictionary<TileDirections, bool> avaibleDirections = new()
+            {
+                { TileDirections.West, directions.Dequeue() },
+                { TileDirections.South, directions.Dequeue() },
+                { TileDirections.East, directions.Dequeue() },
+                { TileDirections.North, directions.Dequeue() }
+            };
 
-
-            AvaibleDirections.Add(TileDirections.West, directions.Dequeue());
-            AvaibleDirections.Add(TileDirections.South, directions.Dequeue());
-            AvaibleDirections.Add(TileDirections.East, directions.Dequeue());
-            AvaibleDirections.Add(TileDirections.North, directions.Dequeue());
+            return avaibleDirections;
         }
-
     }
 }

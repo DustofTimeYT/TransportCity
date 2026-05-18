@@ -19,8 +19,8 @@ public class PreferencesConfig : ScriptableObject
     [field: Range(0.5f, 5f)]
     public float RCSpeed { get; private set; } = 3f;
 
-    [SerializedDictionary("Function", "HotKey")]
-    public SerializedDictionary<HotKeyFunc, KeyCode> HotKeys;
+    [SerializeField, SerializedDictionary("Function", "HotKey")]
+    private SerializedDictionary<HotKeyFunc, KeyCode> HotKeys;
 
     public Dictionary<HotKeyFunc, KeyCode> GetHotKeys()
     {

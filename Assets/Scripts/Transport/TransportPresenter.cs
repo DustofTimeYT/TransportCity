@@ -91,6 +91,11 @@ namespace Transport
             return _model.MaxCapacity;
         }
 
+        public int GetMaxSpeed()
+        {
+            return _model.MaxSpeed;
+        }
+
         public void LoadCargo()
         {
             var cargo = _model.Route.GetProducer().GetCargo(_model.Route);

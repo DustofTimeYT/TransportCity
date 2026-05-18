@@ -104,19 +104,6 @@ namespace Grid
             return true;
         }
 
-        private bool TryGetCells(IReadOnlyList<Vector2Int> cellsPos, out List<IMovable> cells)
-        {
-            cells = new();
-
-            foreach (Vector2Int cellPos in cellsPos)
-            {
-                if (!TryGetTile(cellPos, out IMovable cell)) return false;
-                cells.Add(cell);
-            }
-
-            return true;
-        }
-
         private bool TryGetTile(Vector2Int cellPos, out ITilePresenter cell)
         {
             cell = null;
@@ -125,34 +112,11 @@ namespace Grid
                 cell = _structure;
                 return true;
             }
-            //if (_model.Roads.TryGetValue(cellPos, out var _road))
-            //{
-            //    //cell = _road;
-            //    return true;
-            //}
-            //if (_model.Producers.TryGetValue(cellPos, out var _producer))
-            //{
-            //    //cell = _producer;
-            //    Debug.LogError("Производитель не доделан");
-            //    return true;
-            //}
-            //if (_model.Consumers.TryGetValue(cellPos, out var _consumer))
-            //{
-            //    //cell = _consumer;
-            //    Debug.LogError("Потребитель не доделан");
-            //    return true;
-            //}
             return false;
         }
 
         public bool TryGetTile(Vector2Int cellPos, out IMovable cell)
         {
-            //if (_gridModel.Roads.TryGetValue(cellPos, out var RCPcell))
-            //{
-            //    cell = RCPcell;
-            //    return true;
-            //}
-
             cell = null;
             return false;
         }

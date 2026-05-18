@@ -58,6 +58,7 @@ public class MainMenuManagerScr : MonoBehaviour
 
     public void Continue()
     {
+        ScenesManager.OpenGame();
         Debug.Log("Game run");
     }
 
@@ -69,6 +70,16 @@ public class MainMenuManagerScr : MonoBehaviour
     {
         ScenesManager.OpenGame();
         Debug.Log("New game run");
+    }
+
+    /// <summary>
+    /// Функция выхода из игры
+    /// </summary>
+
+    public void Exit()
+    {
+        Application.Quit();
+        Debug.Log("Game stop");
     }
 
     /// <summary>
@@ -95,15 +106,6 @@ public class MainMenuManagerScr : MonoBehaviour
 
     }
 
-    /// <summary>
-    /// Функция выхода из игры
-    /// </summary>
-
-    public void Exit()
-    {
-        Application.Quit();
-        Debug.Log("Game stop");
-    }
 
 
     /// <summary>

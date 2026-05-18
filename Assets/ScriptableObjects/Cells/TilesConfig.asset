@@ -16,6 +16,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a493558183f1ac245b95f0fb35124d77, type: 2}
   <RoadTiles>k__BackingField:
   - {fileID: 11400000, guid: 71ca1d098b03b4741a7b1a8745348e2a, type: 2}
+  - {fileID: 11400000, guid: c561375279da4a7448206d94f0314233, type: 2}
+  - {fileID: 11400000, guid: b1232ba02d6cdd9458ab832c38077c69, type: 2}
+  - {fileID: 11400000, guid: 9d3b2381a73a9f14d985b5474a32d916, type: 2}
+  - {fileID: 11400000, guid: 41000fa1047f812489bf51aac2eff3dd, type: 2}
+  - {fileID: 11400000, guid: 98e6e918bfd0a024e94997c0db950af9, type: 2}
+  - {fileID: 11400000, guid: d17b51bdaacb3644cb0cd0162784148b, type: 2}
+  - {fileID: 11400000, guid: c0b039090868fa3459b9a49e3025f6f3, type: 2}
   <StructureTiles>k__BackingField: []
   <ProsumerTiles>k__BackingField:
   - {fileID: 11400000, guid: ead7a58aecf7c3247b138451c4d25e79, type: 2}

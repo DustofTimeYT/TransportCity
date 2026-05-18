@@ -10,6 +10,8 @@ public class TransportSlotView : MonoBehaviour, IView<TransportSlotPresenter>, I
 
     [SerializeField] private Image _image;
     [SerializeField] private TextMeshProUGUI _title;
+    [SerializeField] private TextMeshProUGUI _maxSpeed;
+    [SerializeField] private TextMeshProUGUI _maxCapacity;
     [SerializeField] private TextMeshProUGUI _cost;
 
 
@@ -56,5 +58,7 @@ public class TransportSlotView : MonoBehaviour, IView<TransportSlotPresenter>, I
         _image.color = new Color(255, 255, 255, 0f);
         _title.text = _presenter.GetName();
         _cost.text = _presenter.GetCost();
+        _maxSpeed.text = _presenter.GetMaxSpeed();
+        _maxCapacity.text = _presenter.GetMaxCapacity();
     }
 }

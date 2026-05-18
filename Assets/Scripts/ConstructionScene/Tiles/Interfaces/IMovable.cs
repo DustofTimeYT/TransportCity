@@ -6,5 +6,7 @@ public interface IMovable
 {
     public int GetMovementDifficulty();
 
-    public Dictionary<TileDirections, bool> GetAvaibleDirections();
+    public Dictionary<TileDirections, bool> GetIncomingDirections();
+
+    public Dictionary<TileDirections, bool> GetOutgoingDirections();
 }

@@ -18,6 +18,16 @@ public class TransportSlotModel
         return _transportConfig.Name;
     }
 
+    public int GetMaxSpeed()
+    {
+        return _transportConfig.MaxSpeed;
+    }
+
+    public int GetMaxCapacity()
+    {
+        return _transportConfig.MaxCapacity;
+    }
+
     public int GetCost()
     {
         return _transportConfig.Cost;

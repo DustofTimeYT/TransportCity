@@ -7,6 +7,15 @@
       "dependencies": {},
       "hash": "2fc7a2366437467e70b38dc756c7d9d06e4909b0"
     },
+    "com.domybest.mybox": {
+      "version": "https://github.com/Deadcows/MyBox.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "hash": "b3cbe94fbc353815106b8286b99fff93043bf78a"
+    },
     "com.github-glitchenzo.nugetforunity": {
       "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
       "depth": 0,

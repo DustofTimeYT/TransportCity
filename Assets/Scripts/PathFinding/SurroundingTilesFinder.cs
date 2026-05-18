@@ -16,9 +16,9 @@ namespace PathFindAlgo
 
         public PathFindingTile FindCurrentTile(Vector2Int currentTileCoordinates)
         {
-            if (_grid.TryGetTile(new Vector2Int(currentTileCoordinates.x, currentTileCoordinates.y), out IMovable tileData))
+            if (_grid.TryGetTile(currentTileCoordinates, out IMovable tileData))
             {
-                return new PathFindingTile(currentTileCoordinates, tileData.GetMovementDifficulty(), tileData.GetAvaibleDirections());
+                return new PathFindingTile(currentTileCoordinates, tileData);
             }
 
             return null;
@@ -61,33 +61,46 @@ namespace PathFindAlgo
             }
             else if (grid.TryGetTile(new Vector2Int(tileCoords.x, tileCoords.y), out IMovable tileData))
             {
-                findingTile = new PathFindingTile(tileCoords, tileData.GetMovementDifficulty(), tileData.GetAvaibleDirections());
+                findingTile = new PathFindingTile(tileCoords, tileData);
             }
 
 
             if (findingTile != null)
             {
-                var currentDirections = currentPFTile.PathDirections;
-                if (currentPFTile.coordinates.x - findingTile.coordinates.x == 0)
+                var currentDirections = currentPFTile.GetOutgoingDirections();
+                Debug.Log($"config North = {currentDirections[TileDirections.North]}, East = {currentDirections[TileDirections.East]}, South = {currentDirections[TileDirections.South]}, West = {currentDirections[TileDirections.West]} ");
+                if (currentPFTile.coordinates.y - findingTile.coordinates.y == -1)
                 {
-                    if (currentDirections[TileDirections.North] && findingTile.PathDirections[TileDirections.South])
+                    if (currentDirections[TileDirections.South] && findingTile.GetIncomingDirections()[TileDirections.North])
                     {
-                        return true;
-                    }
-                    else if (currentDirections[TileDirections.South] && findingTile.PathDirections[TileDirections.North])
-                    {
+                        Debug.Log("South-North");
                         return true;
                     }
                 }
-                else if (currentPFTile.coordinates.y - findingTile.coordinates.y == 0)
+
+                if (currentPFTile.coordinates.y - findingTile.coordinates.y == 1)
                 {
-                   
-                    if (currentDirections[TileDirections.East] && findingTile.PathDirections[TileDirections.West])
+                    if (currentDirections[TileDirections.North] && findingTile.GetIncomingDirections()[TileDirections.South])
                     {
+                        Debug.Log($"North = {currentDirections[TileDirections.North]} - South = {findingTile.GetIncomingDirections()[TileDirections.South]}");
                         return true;
                     }
-                    else if (currentDirections[TileDirections.West] && findingTile.PathDirections[TileDirections.East])
+                }
+
+                if (currentPFTile.coordinates.x - findingTile.coordinates.x == -1)
+                {
+
+                    if (currentDirections[TileDirections.West] && findingTile.GetIncomingDirections()[TileDirections.East])
                     {
+                        Debug.Log("West-East");
+                        return true;
+                    }
+                }
+                if (currentPFTile.coordinates.x - findingTile.coordinates.x == 1)
+                { 
+                    if (currentDirections[TileDirections.East] && findingTile.GetIncomingDirections()[TileDirections.West])
+                    {
+                        Debug.Log($" East = {findingTile.GetIncomingDirections()[TileDirections.East]} - West = {currentDirections[TileDirections.West]}");
                         return true;
                     }
                 }

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67425109ae4a24f4da0cb9661b9ecce5, type: 3}
+  m_Name: ConsumerTileConfig
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Wooden Store
+  <TilePref>k__BackingField: {fileID: 8153631944901670155, guid: 86a1204920a899e449f0330ff0249ad6,
+    type: 3}
+  <TileType>k__BackingField: 5
+  <MovementDifficulty>k__BackingField: 1
+  SeparateDirections: 0
+  IncomingDirections:
+    _serializedList:
+    - Key: 0
+      Value: 1
+    - Key: 1
+      Value: 0
+    - Key: 2
+      Value: 0
+    - Key: 3
+      Value: 0
+  OutgoingDirections:
+    _serializedList: []
+  <ProducerProduct>k__BackingField: 
+  <ConsumerProduct>k__BackingField: 01000000

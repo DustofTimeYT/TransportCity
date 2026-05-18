@@ -8,8 +8,8 @@ using UnityEngine;
 public class TransportView : MonoBehaviour
 {
     private const int _rotationAngle = 45;
-    private const float _waitRouteTime = 0.5f;
-    private const float _waitLoadTime = 3f;
+    private float _waitRouteTime;
+    private float _waitLoadTime;
 
     private TransportPresenter _presenter;
 
@@ -18,6 +18,13 @@ public class TransportView : MonoBehaviour
     public void Bind(TransportPresenter presenter)
     {
         _presenter = presenter;
+        if (_presenter.GetMaxSpeed() != 0)
+            _waitRouteTime = 100f / _presenter.GetMaxSpeed();
+        else
+            _waitRouteTime = 2f;
+
+        _waitLoadTime = 0.2f * _presenter.GetMaxCapacity();
+
         Hide();
         SetPosition(_presenter.GetPosition());
         Subscribe();
@@ -72,14 +79,10 @@ public class TransportView : MonoBehaviour
         {
             Vector2Int curPos = _presenter.GetPosition();
 
-            Debug.Log($"prevPos {prevPos} : curPos {curPos} : nextPos {nextPos}");
-
-
             if ((prevPos.x == curPos.x && curPos.x == nextPos.x) || (prevPos.y == curPos.y && curPos.y == nextPos.y))
             {
                 gameObject.transform.LookAt(new Vector3(nextPos.x, 0, nextPos.y));
                 yield return new WaitForSeconds(_waitRouteTime);
-                //gameObject.transform.
             }
             else
             {
@@ -147,26 +150,9 @@ public class TransportView : MonoBehaviour
                         SetRotation(_rotationAngle);
                     }
                 }
-                /*
-                if (nextPos.x - curPos.x < 0 || nextPos.y - curPos.y > 0)
-                {
-                    SetRotation(-_rotationAngle);
-                    yield return new WaitForSeconds(_waitRouteTime);
-                    SetRotation(-_rotationAngle);
-                }
-                else if (nextPos.x - curPos.x > 0 || nextPos.y - curPos.y < 0)
-                {
-                    SetRotation(_rotationAngle);
-                    yield return new WaitForSeconds(_waitRouteTime);
-                    SetRotation(_rotationAngle);
-                }
-                */
             }
 
-            SetPosition(nextPos);
-            //LookAtTile(nextPos, prevPos);
-            //SetPosition(nextPos);
-            //yield return new WaitForSeconds(_waitTime);
+            SetPosition(nextPos);;
             prevPos = curPos;
         }
         yield break;

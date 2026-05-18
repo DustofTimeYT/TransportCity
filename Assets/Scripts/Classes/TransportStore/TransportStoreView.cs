@@ -33,10 +33,4 @@ public class TransportStoreView : AbsMenuView<TransportStorePresenter, Transport
     {
         _garageDropdown.UpdateDropdownOptions(_presenter.GetGarages());
     }
-
-
-    public void BuyTransport()
-    {
-        _presenter.CreateTransport();
-    }
 }

@@ -6,6 +6,7 @@ using Zenject;
 using GarageManager;
 using OrderManager;
 using Bank;
+using ConstructionSystem;
 
 
 public class GameSceneInstaller : MonoInstaller
@@ -16,13 +17,12 @@ public class GameSceneInstaller : MonoInstaller
     [SerializeField] private TransportCatalog _transportCatalog;
 
     [SerializeField] private BankView _bankView;
-    [SerializeField] private ConstructionSystem_V _constructionSystem_V;
+    [SerializeField] private ConstructionSystemView _constructionSystem_V;
     [SerializeField] private ContractBoardView _contractBoardView;
     [SerializeField] private TransportStoreView _transportStoreView;
     [SerializeField] private OrderMenuView _orderMenuView;
     public override void InstallBindings()
     {
-        BindEventBus();
         BindBank();
         BindGrid();
         BindPathFind();
@@ -64,8 +64,8 @@ public class GameSceneInstaller : MonoInstaller
 
     private void BindConstructionSystem()
     {
-        Container.BindInterfacesAndSelfTo<ConstructionSystem_P>().FromNew().AsSingle();
-        Container.BindInterfacesAndSelfTo<ConstructionSystem_V>().FromInstance(_constructionSystem_V).AsSingle();
+        Container.BindInterfacesAndSelfTo<ConstructionSystemPresenter>().FromNew().AsSingle();
+        Container.BindInterfacesAndSelfTo<ConstructionSystemView>().FromInstance(_constructionSystem_V).AsSingle();
     }
 
     private void BindContractBoard()
@@ -94,10 +94,6 @@ public class GameSceneInstaller : MonoInstaller
         Container.Bind<IGarageManager>().To<GarageManagerPresenter>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<TransportStorePresenter>().FromNew().AsSingle();
         Container.BindInterfacesAndSelfTo<TransportStoreView>().FromInstance(_transportStoreView).AsSingle();
-    }
-
-    private void BindEventBus()
-    {
     }
 }
 

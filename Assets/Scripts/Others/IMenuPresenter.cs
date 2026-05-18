@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public interface IMenuPresenter<T>
+public interface IMenuPresenter<LinePresenter>
 {
-    public List<T> GetLines();
+    public List<LinePresenter> GetLines();
 
     public event Action UpdateView;
 }

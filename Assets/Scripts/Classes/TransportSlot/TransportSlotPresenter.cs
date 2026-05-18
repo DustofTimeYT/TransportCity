@@ -21,6 +21,16 @@ public class TransportSlotPresenter
         return _model.GetName();
     }
 
+    public string GetMaxSpeed()
+    {
+        return $"Max speed: {_model.GetMaxSpeed()} km/h";
+    }
+
+    public string GetMaxCapacity()
+    {
+        return $"Max cargo capacity: {_model.GetMaxCapacity()}";
+    }
+
     public string GetCost()
     {
         return $"{_model.GetCost()} rub";
@@ -28,6 +38,6 @@ public class TransportSlotPresenter
 
     public void OnClick()
     {
-        _transportStore.SetSelectedTransport(_model.GetTransportConfig());
+        _transportStore.CreateTransport(_model.GetTransportConfig());
     }
 }

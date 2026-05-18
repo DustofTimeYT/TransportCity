@@ -21,10 +21,14 @@ namespace AbsMoveTile
             UpdateView(_model);
         }
 
-        public Dictionary<TileDirections, bool> GetAvaibleDirections()
+        public Dictionary<TileDirections, bool> GetIncomingDirections()
         {
-            return _model.AvaibleDirections;
+            return _model.IncomingDirections;
         }
 
+        public Dictionary<TileDirections, bool> GetOutgoingDirections()
+        {
+            return _model.OutgoingDirections;
+        }
     }
 }

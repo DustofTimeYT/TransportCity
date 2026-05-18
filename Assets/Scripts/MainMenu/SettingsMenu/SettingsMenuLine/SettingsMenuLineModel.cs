@@ -15,7 +15,7 @@ namespace SettingsMenuLine
             Key = key;
         }
 
-        internal void SetKey(KeyCode key)
+        public void SetKey(KeyCode key)
         {
             Key = key;
         }

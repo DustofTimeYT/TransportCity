@@ -5,7 +5,7 @@ namespace OrderMenu
 {
     public class OrderMenuModel
     {
-        public Dictionary<int, OrderLinePresenter> OrderLines { get; private set; }
+        public Dictionary<int ,OrderLinePresenter> OrderLines { get; private set; }
 
         public OrderMenuModel()
         {

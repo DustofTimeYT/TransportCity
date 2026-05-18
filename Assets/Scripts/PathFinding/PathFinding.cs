@@ -98,7 +98,7 @@ namespace PathFindAlgo
                 _openedList.Add(activeCell.coordinates, activeCell);
             }
 
-            activeCell.TrySetPathLenght(currentCellCoordinates, PFCalculator.CalculatePathLenght(currentPathLength, activeCell.movementDifficulty));
+            activeCell.TrySetPathLenght(currentCellCoordinates, PFCalculator.CalculatePathLenght(currentPathLength, activeCell.GetMovementDifficulty()));
 
             activeCell.CalculateTileWeight();
         }

@@ -13,12 +13,21 @@ MonoBehaviour:
   m_Name: GarageTileConfig
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Garage
-  <TilePref>k__BackingField: {fileID: 4797458041556597482, guid: c9acb0c026348fa42b94a42f77e95b46,
+  <TilePref>k__BackingField: {fileID: 6185151567781799399, guid: c9acb0c026348fa42b94a42f77e95b46,
     type: 3}
   <TileType>k__BackingField: 2
   <MovementDifficulty>k__BackingField: 1
-  <North>k__BackingField: 1
-  <East>k__BackingField: 1
-  <South>k__BackingField: 1
-  <West>k__BackingField: 1
+  SeparateDirections: 0
+  IncomingDirections:
+    _serializedList:
+    - Key: 0
+      Value: 1
+    - Key: 1
+      Value: 0
+    - Key: 2
+      Value: 0
+    - Key: 3
+      Value: 0
+  OutgoingDirections:
+    _serializedList: []
   <AmountParkingSlots>k__BackingField: 2

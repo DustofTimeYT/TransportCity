@@ -5,8 +5,17 @@ using Zenject;
 
 namespace AbsMenu
 {
+    public enum OrientedLayout
+    {
+        Vertical,
+        Horizontal
+    }
+
     public abstract class AbsMenuView<MenuPresenter, LinePresenter, LineView> : MonoBehaviour where MenuPresenter : IMenuPresenter<LinePresenter> where LineView : IView<LinePresenter>
     {
+
+        [SerializeField]
+        protected OrientedLayout _orientedLayout = OrientedLayout.Vertical;
 
         [SerializeField]
         protected int _lineAmount;
@@ -35,17 +44,17 @@ namespace AbsMenu
             _lineViews = new List<LineView>();
             _lastLineIndex = 0;
 
-            CalculateLineAmount();
+            //_lineAmount = _orientedLayout == OrientedLayout.Vertical? CalculateLineAmount() : _lineAmount;
 
             Subscribe();
         }
 
-        private void CalculateLineAmount()
+        private int CalculateLineAmount()
         {
             float containerHeight = _linesContainer.gameObject.GetComponent<RectTransform>().rect.height;
             float lineHeight = _linePref.GetComponent<RectTransform>().rect.height;
 
-            _lineAmount = Mathf.FloorToInt(containerHeight/lineHeight);
+            return Mathf.FloorToInt(containerHeight/lineHeight);
         }
 
         protected virtual void Subscribe()
@@ -64,8 +73,8 @@ namespace AbsMenu
             if (_lastLineIndex < _presenter.GetLines().Count - _lineAmount)
             {
                 _lastLineIndex = _lastLineIndex + _lineAmount;
+                UpdateLines();
             }
-            UpdateLines();
         }
         public void PreviousPage()
         {
@@ -74,6 +83,7 @@ namespace AbsMenu
             {
                 _lastLineIndex = 0;
             }
+            
             UpdateLines();
         }
 
@@ -89,7 +99,7 @@ namespace AbsMenu
 
             for (int i = index; i < _lineViews.Count; i++)
             {
-                _lineViews[index].Hide();
+                _lineViews[i].Hide();
             }
         }
 

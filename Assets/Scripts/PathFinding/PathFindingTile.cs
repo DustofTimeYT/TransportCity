@@ -6,16 +6,14 @@ namespace PathFindAlgo
 {
     public class PathFindingTile
     {
-        public PathFindingTile(Vector2Int coordinates, int movementDifficulty, Dictionary<TileDirections, bool> pathDirections)
+        private IMovable _tileData;
+
+        public PathFindingTile(Vector2Int coordinates, IMovable tileData)
         {
             this.coordinates = coordinates;
-            this.movementDifficulty = movementDifficulty;
-            PathDirections = pathDirections;
+            _tileData = tileData;
             pathLength = 0;
         }
-        public int movementDifficulty { get; private set; }
-
-        public Dictionary<TileDirections, bool> PathDirections { get; private set; }
 
         public Vector2Int coordinates { get; private set; }
 
@@ -23,6 +21,21 @@ namespace PathFindAlgo
         public int tileWeight { get; private set; }
         public int pathLength { get; private set; }
         public int heuristicApproximation { get; private set; }
+
+        public int GetMovementDifficulty()
+        {
+            return _tileData.GetMovementDifficulty();
+        }
+
+        public Dictionary<TileDirections, bool> GetIncomingDirections()
+        {
+            return _tileData.GetIncomingDirections();
+        }
+
+        public Dictionary<TileDirections, bool> GetOutgoingDirections()
+        {
+            return _tileData.GetOutgoingDirections();
+        }
 
         /// <summary>
         /// ћетод рассчета веса €чейки

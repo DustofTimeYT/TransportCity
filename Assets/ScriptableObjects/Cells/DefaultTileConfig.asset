@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DefaultTileConfig
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Grass
-  <TilePref>k__BackingField: {fileID: 3534353858270665245, guid: 8699bba22543ca94cbdcecc97484a728,
+  <TilePref>k__BackingField: {fileID: 4288676152996897734, guid: 50ce3cfd86a5bb84691cd9de00f73d7b,
     type: 3}
   <TileType>k__BackingField: 6

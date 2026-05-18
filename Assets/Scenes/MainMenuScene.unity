@@ -2088,7 +2088,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7dc6cba5e7d58b428efb77873759399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lineAmount: 4
+  _orientedLayout: 0
+  _lineAmount: 10
   _linePref: {fileID: 4453962006175714228, guid: 97d0a78ea0b1e8642aebd5d157ed9538,
     type: 3}
   _linesContainer: {fileID: 346111857}

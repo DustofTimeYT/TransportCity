@@ -1,19 +1,31 @@
-﻿using UnityEngine;
+﻿using AYellowpaper.SerializedCollections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class AbsMoveTileConfig : AbsTileConfig
 {
     [field: SerializeField]
     public int MovementDifficulty { get; private set; }
 
-    [field: SerializeField]
-    public bool North { get; private set; }
+    public bool SeparateDirections;
 
-    [field: SerializeField]
-    public bool East { get; private set; }
+    [SerializeField, SerializedDictionary("Direction", "Avaible")]
+    private SerializedDictionary<TileDirections, bool> IncomingDirections;
 
-    [field: SerializeField]
-    public bool South { get; private set; }
+    
+    [SerializeField, SerializedDictionary("Direction", "Avaible")]
+    private SerializedDictionary<TileDirections, bool> OutgoingDirections;
 
-    [field: SerializeField]
-    public bool West { get; private set; }
+    public Dictionary<TileDirections, bool> GetIncomingDirections()
+    {
+        return IncomingDirections;
+    }
+
+    public Dictionary<TileDirections, bool> GetOutgoingDirections()
+    {
+        if(SeparateDirections)
+            return OutgoingDirections;
+        else
+            return IncomingDirections;
+    }
 }

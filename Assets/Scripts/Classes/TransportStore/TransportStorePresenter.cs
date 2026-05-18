@@ -69,31 +69,25 @@ public class TransportStorePresenter : IMenuPresenter<TransportSlotPresenter>
         return garagesName;
     }
 
-    public void SetSelectedTransport(TransportConfig transportConfig)
+    public void CreateTransport(TransportConfig transportConfig)
     {
-        _model.SetTransportConfig(transportConfig);
-        Debug.Log(transportConfig.Name);
-    }
-
-    public void CreateTransport()
-    {
-        if (_model.SelectedGarage == null || _model.SelectedTransportConfig == null)
+        if (_model.SelectedGarage == null || transportConfig == null)
         {
             Debug.Log($"Transport was not created in Garage. Please select Transport or Garage");
             return;
         }
 
-        if (_bank.DebitMoney(_model.SelectedTransportConfig.Cost))
+        if (_bank.DebitMoney(transportConfig.Cost))
         {
-            TransportPresenter transport = new TransportPresenter(_model.SelectedTransportConfig, _pathFinder, _model.SelectedGarage);
-            TransportView transportView = GameObject.Instantiate(_model.SelectedTransportConfig.transportPref, _transportsContainer).GetComponent<TransportView>();
+            TransportPresenter transport = new TransportPresenter(transportConfig, _pathFinder, _model.SelectedGarage);
+            TransportView transportView = GameObject.Instantiate(transportConfig.transportPref, _transportsContainer).GetComponent<TransportView>();
             transportView.Bind(transport);
             _garageManager.AddTransport(transport, _model.SelectedGarage);
             Debug.Log($"{transport.GetName()} was created in {_model.SelectedGarage.GetName()}");
         }
         else
         {
-            Debug.Log($"Not enough money to buy {_model.SelectedTransportConfig.Name}");
+            Debug.Log($"Not enough money to buy {transportConfig.Name}");
         }
     }
 

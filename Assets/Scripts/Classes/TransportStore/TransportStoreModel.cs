@@ -8,8 +8,6 @@ namespace TransportStore
         public List<TransportSlotPresenter> TransportSlots { get; private set; }
         public IGarage SelectedGarage { get; private set; }
 
-        public TransportConfig SelectedTransportConfig { get; private set; }
-
         public TransportStoreModel()
         {
             TransportSlots = new List<TransportSlotPresenter>();
@@ -18,11 +16,6 @@ namespace TransportStore
         public void SetGarage(IGarage garage)
         {
             SelectedGarage = garage;
-        }
-
-        public void SetTransportConfig(TransportConfig transportConfig)
-        {
-            SelectedTransportConfig = transportConfig;
         }
     }
 }
